@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { categoryGet, categoryPost } from "./controllers/CategoryController";
+import { categoryGet, categoryPost } from "./controllers/category-controllers/CategoryController";
 import { createUser, deleteUsers, getUsers } from "./controllers/register-controllers/UserController";
-import { productPost, productGet } from "./controllers/ProductsController";
+import { productPost, productGet } from "./controllers/product-controllers/ProductsController";
 
 export const router = Router();
 

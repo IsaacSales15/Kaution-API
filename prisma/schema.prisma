@@ -12,7 +12,7 @@ model User {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
   email   String   @unique
   name    String?
-  password String
+  password String?
   categories Category?
 }
 
@@ -22,7 +22,7 @@ model Category {
   description   String?
   user User @relation(fields: [userId], references: [id])
   userId  String @db.ObjectId @unique
-  products Product[]
+  products Product?
   created DateTime @default(now())
   uptadeAt DateTime @updatedAt
 }
@@ -33,5 +33,5 @@ model Product {
   description   String
   quantity    Int?
   category Category @relation(fields: [categoryId], references: [id])
-  categoryId  String @db.ObjectId
+  categoryId  String @db.ObjectId @unique
 }
