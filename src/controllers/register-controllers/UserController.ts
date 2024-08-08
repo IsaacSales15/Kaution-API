@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../database/prisma";
+import { hash } from "bcryptjs";
 
 export const createUser = async (req: Request, res: Response) => {
   try {
@@ -19,11 +20,13 @@ export const createUser = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "User already exists" });
     }
 
+    const hashPassword = await hash(password, 8);
+
     const user = await prisma.user.create({
       data: {
         name,
         email,
-        password,
+        password: hashPassword,
       },
       select: {
         name: true,
