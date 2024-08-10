@@ -7,31 +7,46 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
 model User {
+  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
+  email              String    @unique
+  name               String
+  password           String
+  isVerified         Boolean?  @default(false)
+  verificationCode   String?
+  verificationExpire DateTime
+  categories         Category?
+  created            DateTime? @default(now())
+  uptadeAt           DateTime? @updatedAt
+  AuthCode           AuthCode?
+}
+
+model AuthCode {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  email   String   @unique
-  name    String?
-  password String?
-  categories Category?
+  userId  String   @unique @db.ObjectId
+  code    String
+  expire  DateTime
+  created DateTime @default(now())
+  user User @relation(fields: [userId], references: [id])
+  @@index([userId, expire])
 }
 
 model Category {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name    String?
-  description   String?
-  user User @relation(fields: [userId], references: [id])
-  userId  String @db.ObjectId @unique
-  products Product?
-  created DateTime @default(now())
-  uptadeAt DateTime @updatedAt
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String?
+  description String?
+  user        User     @relation(fields: [userId], references: [id])
+  userId      String   @unique @db.ObjectId
+  products    Product?
+  created     DateTime @default(now())
+  uptadeAt    DateTime @updatedAt
 }
 
 model Product {
-  id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  name    String?
-  description   String
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String?
+  description String
   quantity    Int?
-  category Category @relation(fields: [categoryId], references: [id])
-  categoryId  String @db.ObjectId @unique
+  category    Category @relation(fields: [categoryId], references: [id])
+  categoryId  String   @unique @db.ObjectId
 }
