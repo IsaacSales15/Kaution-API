@@ -7,12 +7,14 @@ export const productGet = async (req: Request, res: Response) => {
     allProducts = await prisma.product.findMany()
 
     return res.status(200).json({allProducts})
-}
+};
 
 export const productPost = async (req: Request, res: Response) => {
+    const reqcategoryid = req.params.categoryid
+
     await prisma.product.create({
         data: {
-            categoryId: req.params.categoryid,
+            categoryId: reqcategoryid,
             name: req.body.name,
             description: req.body.description,
             quantity: req.body.quantity
@@ -20,4 +22,19 @@ export const productPost = async (req: Request, res: Response) => {
     })
 
     return res.status(201).json({message: "Produto criado"});
+};
+
+export const productDelete = async (req:Request, res: Response) => {
+    const reqcategoryid = req.params.categoryid
+    const reqproductid = req.params.productid
+    console.log(reqcategoryid, reqproductid)
+
+    await prisma.product.deleteMany({
+        where: {
+            id: reqproductid,
+            categoryId: reqcategoryid
+        }
+    })
+
+    return res.status(200).json(productGet)
 }
