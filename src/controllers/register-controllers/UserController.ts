@@ -6,7 +6,7 @@ import { generateCode } from "../../utils/generateCode";
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password } = req.params;
 
     if (!name || !email || !password) {
       return res.status(400).json({ error: "Name and email are required" });
@@ -14,7 +14,7 @@ export const createUser = async (req: Request, res: Response) => {
 
     const userExists = await prisma.user.findUnique({
       where: {
-        email,
+        email: String(email),
       },
     });
 
@@ -27,8 +27,8 @@ export const createUser = async (req: Request, res: Response) => {
 
     const user = await prisma.user.create({
       data: {
-        name,
-        email,
+        name: String(name),
+        email: String(email),
         password: hashPassword,
         isVerified: false,
         verificationCode: code,
@@ -46,7 +46,9 @@ export const createUser = async (req: Request, res: Response) => {
       await sendEmail(user.email, user.name, code);
     } catch (error) {
       console.log("Erro no email: ", error);
-      return res.status(500).json({ error: "User created, but email not sent" });
+      return res
+        .status(500)
+        .json({ error: "User created, but email not sent" });
     }
 
     return res.status(201).json(user);
@@ -67,30 +69,30 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const deleteUser = async (req: Request, res: Response) => {
   try {
-    const { userId } = req.body;
+    const { userId } = req.params;
 
     await prisma.product.deleteMany({
       where: {
         category: {
-          userId,
+          userId: String(userId),
         },
       },
     });
 
     await prisma.category.deleteMany({
       where: {
-        userId,
+        userId: String(userId),
       },
     });
 
     const users = await prisma.user.deleteMany({
       where: {
-        id: userId,
+        id: String(userId),
       },
     });
 
     return res.status(200).json(users);
   } catch (error) {
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error: "Erro interno do servidor" });
   }
 };

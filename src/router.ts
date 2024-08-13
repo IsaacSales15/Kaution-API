@@ -16,9 +16,9 @@ router.post("/:categoryid/product", productPost);
 router.get("/user/category/product", productGet);
 
 //user
-router.post("/user", createUser);
+router.post("/user/:name/:email/:password", createUser);
 router.get("/user-getAll", getUsers);
-router.delete("/user-delete", deleteUser);
+router.delete("/user-delete/:userId", deleteUser);
 
 //verify
 router.post("/user-verify", verify);
