@@ -17,11 +17,11 @@ router.get("/user/category/product", productGet);
 
 //user
 router.post("/user/:name/:email/:password", createUser);
-router.get("/user-getAll", getUsers);
-router.delete("/user-delete/:userId", deleteUser);
+router.get("/user/user-getAll", getUsers);
+router.delete("/user/user-delete/:userId", deleteUser);
 
 //verify
-router.post("/user-verify", verify);
+router.post("/user/user-verify", verify);
 
 // id user sales = "66b7fdee5d9f43da5d4d3c42"
 // id category sales = "66ba0bda30fe4944de6c3ed9"
