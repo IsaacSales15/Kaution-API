@@ -45,7 +45,8 @@ export const createUser = async (req: Request, res: Response) => {
     try {
       await sendEmail(user.email, user.name, code);
     } catch (error) {
-      console.log("Erro no email: ", error);
+      console.log("Error: ", error);
+      console.log(error);
       return res
         .status(500)
         .json({ error: "User created, but email not sent" });
@@ -93,6 +94,6 @@ export const deleteUser = async (req: Request, res: Response) => {
 
     return res.status(200).json(users);
   } catch (error) {
-    return res.status(500).json({ error: "Erro interno do servidor" });
+    return res.status(500).json({ error: "Error" });
   }
 };
