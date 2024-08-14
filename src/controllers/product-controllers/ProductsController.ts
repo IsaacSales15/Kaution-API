@@ -3,12 +3,24 @@ import { prisma } from "../../database/prisma";
 
 export const productGet = async (req: Request, res: Response) => {
     try {
-        const products = await prisma.product.findMany();
+        const reqcategoryid = req.params.categoryid;
 
-        return res.status(200).json(products);
+        if (reqcategoryid != "all") {
+            const products = await prisma.product.findMany({
+                where: {
+                    categoryId: reqcategoryid,
+                },
+            });
+            return res.status(200).json(products);
+        }
+        else {
+            const products = await prisma.product.findMany(); 
+            return res.status(200).json(products);
+        }
+
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
-    }
+    };
 };
 
 export const productPost = async (req: Request, res: Response) => {

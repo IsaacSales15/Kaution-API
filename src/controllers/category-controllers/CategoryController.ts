@@ -3,12 +3,25 @@ import { prisma } from "../../database/prisma";
 
 export const categoryGet = async (req: Request, res: Response) => {
     try {
-        const categories = await prisma.category.findMany();
+        const requserid = req.params.userid;
+        console.log(requserid)
 
-        return res.status(200).json(categories);
+        if (requserid != "all") {
+            const categories = await prisma.category.findMany({
+                where: {
+                    userId: requserid
+                }
+            });
+            return res.status(200).json(categories);
+        }
+        else {
+            const categories = await prisma.category.findMany();
+            return res.status(200).json(categories);
+        }
+
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
-    }
+    };
 };
 
 export const categoryPost = async (req: Request, res: Response) => {
@@ -23,8 +36,7 @@ export const categoryPost = async (req: Request, res: Response) => {
             data: {
                 userId: requserid,
                 name: req.body.name,
-                description: req.body.description,
-                img: req.body.img
+                description: req.body.description
             }
         });
 

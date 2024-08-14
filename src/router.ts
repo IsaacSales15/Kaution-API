@@ -7,14 +7,14 @@ import { verify } from "./controllers/register-controllers/VerifyController";
 export const router = Router();
 
 //categories
-router.get("/user/category-getAll", categoryGet );
+router.get("/user/:userid/category", categoryGet );
 router.post("/user/:userid/category", categoryPost );
 router.delete("/user/:userid/category/:categoryid", categoryDelete );
 
 //products
-router.get("/user/category/product-getAll", productGet);
+router.get("/user/category/:categoryid/product", productGet);
 router.post("/user/category/:categoryid/product", productPost);
-router.delete("/category/:categoryid/product/:productid", productDelete);
+router.delete("/user/category/:categoryid/product/:productid", productDelete);
 
 //user
 router.post("/user/:name/:email/:password", createUser);
@@ -24,6 +24,6 @@ router.delete("/user/user-delete/:userId", deleteUser);
 //verify
 router.post("/user/user-verify", verify);
 
-// id user sales = ""66bac955f3cac728ac01c7e8"
-// id category sales = "66ba8cc4e1a19a9af87a23cd"
-// id product sales = "66ba8eb10c9bff7b2d2792bd"
+// id user anderson = "66bceaad7cd6fe628593cc29"
+// id category anderson = "66bd392d32b29699eabb0079"
+// id product anderson = "66bd399b95f401fb793ff32e"
