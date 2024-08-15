@@ -1,12 +1,12 @@
 import { Request, Response } from "express";
 import { prisma } from "../../database/prisma";
-import { hash } from "bcryptjs";
+import { hash, compare } from "bcryptjs";
 import { sendEmail } from "../../services/EmailService";
 import { generateCode } from "../../utils/generateCode";
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.params;
+    const { name, email, password } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ error: "Name and email are required" });
@@ -58,42 +58,36 @@ export const createUser = async (req: Request, res: Response) => {
   }
 };
 
-export const getUsers = async (req: Request, res: Response) => {
+export const loginUser = async (req: Request, res: Response) => {
   try {
-    const users = await prisma.user.findMany();
-    return res.status(200).json(users);
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: String(email),
+      },
+    });
+
+    if (!user) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    if (!user.isVerified) {
+      return res.status(400).json({ error: "User not verified" });
+    }
+
+    const passwordMatch = await compare(password, user.password);
+
+    if (!passwordMatch) {
+      return res.status(400).json({ error: "Invalid password" });
+    }
+
+    return res.status(200).json(user);
   } catch (error) {
-    console.error("Error in getUsers:", error);
     return res.status(500).json({ error: "Internal server error" });
   }
-};
-
-export const deleteUser = async (req: Request, res: Response) => {
-  try {
-    const { userId } = req.params;
-
-    await prisma.product.deleteMany({
-      where: {
-        category: {
-          userId: String(userId),
-        },
-      },
-    });
-
-    await prisma.category.deleteMany({
-      where: {
-        userId: String(userId),
-      },
-    });
-
-    const users = await prisma.user.deleteMany({
-      where: {
-        id: String(userId),
-      },
-    });
-
-    return res.status(200).json(users);
-  } catch (error) {
-    return res.status(500).json({ error: "Error" });
-  }
-};
+}
