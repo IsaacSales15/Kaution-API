@@ -5,6 +5,7 @@ import { getUsers, getSingleUser, deleteUser } from "./controllers/register-cont
 import { productPost, productGet, productDelete, productPut } from "./controllers/product-controllers/ProductsController";
 import { verify } from "./controllers/register-controllers/VerifyController";
 import { resendCode } from "./controllers/register-controllers/ResendCodeController";
+import { authMiddleware } from "./middlewares/AuthMiddleware";
 
 export const router = Router();
 
@@ -26,7 +27,7 @@ router.put("/user/category/:categoryid/product/:productid", productPut);
 router.post("/user/user-create", createUser);
 router.post("/user/user-login", loginUser);
 router.get("/user/user-getAll", getUsers);
-router.get("/user/user-get/:userId", getSingleUser);
+router.get("/user/user-profile/:userId", authMiddleware(), getSingleUser);
 router.delete("/user/user-delete/:userId", deleteUser);
 
 //verify

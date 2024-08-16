@@ -3,6 +3,7 @@ import { prisma } from "../../database/prisma";
 import { hash, compare } from "bcryptjs";
 import { sendEmail } from "../../services/EmailService";
 import { generateCode } from "../../utils/generateCode";
+import jwt from "jsonwebtoken";
 
 export const createUser = async (req: Request, res: Response) => {
   try {
@@ -86,8 +87,17 @@ export const loginUser = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Invalid password" });
     }
 
-    return res.status(200).json(user);
+    const token = jwt.sign(
+      { userId: user.id },
+      process.env.JWT_SECRET as string,
+      { expiresIn: process.env.JWT_EXPIRES_IN }
+    );
+
+    res.cookie('authToken', token, { httpOnly: true, secure: true });
+
+    return res.status(200).json({token, message: "Login successful"});
   } catch (error) {
+    console.log(error);
     return res.status(500).json({ error: "Internal server error" });
   }
-}
+};
