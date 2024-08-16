@@ -80,7 +80,7 @@ export const productDelete = async (req: Request, res: Response) => {
                 id: reqcategoryid,
             },
             data: {
-                uptadeAt: new Date(),
+                uptadeAt: today,
             }
         });
 
