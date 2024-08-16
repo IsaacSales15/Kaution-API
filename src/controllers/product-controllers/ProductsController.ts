@@ -1,5 +1,9 @@
 import { Request, Response } from "express";
 import { prisma } from "../../database/prisma";
+import { getUTCTime } from "../../utils/getUTCTime";
+
+let todayISO = new Date().toISOString();
+let today = getUTCTime(todayISO);
 
 export const productGet = async (req: Request, res: Response) => {
     try {
@@ -14,7 +18,7 @@ export const productGet = async (req: Request, res: Response) => {
             return res.status(200).json(products);
         }
         else {
-            const products = await prisma.product.findMany(); 
+            const products = await prisma.product.findMany();
             return res.status(200).json(products);
         }
 
@@ -40,6 +44,15 @@ export const productPost = async (req: Request, res: Response) => {
             }
         });
 
+        await prisma.category.update({
+            where: {
+                id: reqcategoryid,
+            },
+            data: {
+                uptadeAt: today,
+            }
+        });
+
         return res.status(201).json({ message: "Product created" });
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
@@ -50,7 +63,7 @@ export const productDelete = async (req: Request, res: Response) => {
     try {
         const reqcategoryid = req.params.categoryid;
         const reqproductid = req.params.productid;
-        
+
         if (!reqproductid || !reqcategoryid) {
             return res.status(400).json({ error: "Product ID and category ID are required" });
         };
@@ -62,8 +75,52 @@ export const productDelete = async (req: Request, res: Response) => {
             }
         });
 
+        await prisma.category.update({
+            where: {
+                id: reqcategoryid,
+            },
+            data: {
+                uptadeAt: new Date(),
+            }
+        });
+
         return res.status(200).json({ message: "Product deleted" });
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
     }
 };
+
+export const productPut = async (req: Request, res: Response) => {
+    try {
+        const reqcategoryid = req.params.categoryid;
+        const reqproductid = req.params.productid;
+
+        if (!reqproductid || !reqcategoryid) {
+            return res.status(400).json({ error: "Product ID and category ID are required" });
+        };
+
+        await prisma.product.update({
+            where: {
+                id: reqproductid,
+            },
+            data: {
+                name: req.body.name,
+                description: req.body.description,
+                quantity: req.body.quantity
+            }
+        });
+
+        await prisma.category.update({
+            where: {
+                id: reqcategoryid,
+            },
+            data: {
+                uptadeAt: today,
+            }
+        });
+
+        return res.status(200).json({ menssage: "Product updated" });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    };
+}

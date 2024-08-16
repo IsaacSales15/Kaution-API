@@ -1,10 +1,13 @@
 import { Request, Response } from "express";
 import { prisma } from "../../database/prisma";
+import { getUTCTime } from "../../utils/getUTCTime";
+
+let todayISO = new Date().toISOString();
+let today = getUTCTime(todayISO);
 
 export const categoryGet = async (req: Request, res: Response) => {
     try {
         const requserid = req.params.userid;
-        console.log(requserid)
 
         if (requserid != "all") {
             const categories = await prisma.category.findMany({
@@ -36,7 +39,9 @@ export const categoryPost = async (req: Request, res: Response) => {
             data: {
                 userId: requserid,
                 name: req.body.name,
-                description: req.body.description
+                description: req.body.description,
+                created: today,
+                uptadeAt: today
             }
         });
 
@@ -48,12 +53,11 @@ export const categoryPost = async (req: Request, res: Response) => {
 
 export const categoryDelete = async (req: Request, res: Response) => {
     try {
-        const requserid = req.params.userid;
         const reqcategoryid = req.params.categoryid;
 
-        if (!reqcategoryid || !requserid) {
-            return res.status(400).json({ error: "Category ID and user ID are required" });
-        }
+        if (!reqcategoryid) {
+            return res.status(400).json({ error: "Category ID are required" });
+        };
 
         await prisma.product.deleteMany({
             where: {
@@ -66,7 +70,6 @@ export const categoryDelete = async (req: Request, res: Response) => {
         await prisma.category.deleteMany({
             where: {
                 id: reqcategoryid,
-                userId: requserid
             }
         });
 
@@ -74,4 +77,29 @@ export const categoryDelete = async (req: Request, res: Response) => {
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
     }
+};
+
+export const categoryPut = async (req: Request, res: Response) => {
+    try {
+        const reqcategoryid = req.params.categoryid;
+
+        if (!reqcategoryid) {
+            return res.status(400).json({ error: "Category ID is required" });
+        };
+
+        await prisma.category.update({
+            where: {
+                id: reqcategoryid
+            },
+            data: {
+                name: req.body.name,
+                description: req.body.description,
+                uptadeAt: today
+            }
+        });
+
+        res.status(200).json({ message: "Category updated" });
+    } catch (error) {
+        res.status(500).json({ error: "Internal server error" });
+    };
 };
