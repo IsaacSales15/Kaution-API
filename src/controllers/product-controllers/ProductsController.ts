@@ -40,7 +40,7 @@ export const productPost = async (req: Request, res: Response) => {
                 categoryId: reqcategoryid,
                 name: req.body.name,
                 description: req.body.description,
-                quantity: req.body.quantity
+                quantity: parseInt(req.body.quantity)
             }
         });
 
@@ -92,6 +92,8 @@ export const productDelete = async (req: Request, res: Response) => {
 
 export const productPut = async (req: Request, res: Response) => {
     try {
+        console.log(req.body);
+        console.log(req.params);
         const reqcategoryid = req.params.categoryid;
         const reqproductid = req.params.productid;
 
@@ -106,7 +108,7 @@ export const productPut = async (req: Request, res: Response) => {
             data: {
                 name: req.body.name,
                 description: req.body.description,
-                quantity: req.body.quantity
+                quantity: parseInt(req.body.quantity)
             }
         });
 
