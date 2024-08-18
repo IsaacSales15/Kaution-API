@@ -1,8 +1,27 @@
 import { Router } from "express";
-import { categoryGet, categoryPost, categoryDelete, categoryPut } from "./controllers/category-controllers/CategoryController";
-import { createUser, loginUser } from "./controllers/register-controllers/UserController";
-import { getUsers, getSingleUser, deleteUser, updateUser, updatePassword } from "./controllers/register-controllers/UserActionsController";
-import { productPost, productGet, productDelete, productPut } from "./controllers/product-controllers/ProductsController";
+import {
+  categoryGet,
+  categoryPost,
+  categoryDelete,
+  categoryPut,
+} from "./controllers/category-controllers/CategoryController";
+import {
+  createUser,
+  loginUser,
+} from "./controllers/register-controllers/UserController";
+import {
+  getUsers,
+  getSingleUser,
+  deleteUser,
+  updateUser,
+  updatePassword,
+} from "./controllers/register-controllers/UserActionsController";
+import {
+  productPost,
+  productGet,
+  productDelete,
+  productPut,
+} from "./controllers/product-controllers/ProductsController";
 import { verify } from "./controllers/register-controllers/VerifyController";
 import { resendCode } from "./controllers/register-controllers/ResendCodeController";
 import { authMiddleware } from "./middlewares/AuthMiddleware";
@@ -11,7 +30,12 @@ import cors from "cors";
 export const router = Router();
 
 // Enable CORS from all origins
-router.use(cors())
+router.use(
+  cors({
+    origin: "https://kaution-client-side.vercel.app/",
+    allowedHeaders: ["*"],
+  })
+);
 
 //categories
 // se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
@@ -33,7 +57,11 @@ router.post("/user/user-login", loginUser);
 router.get("/user/user-getAll", getUsers);
 router.get("/user/user-profile/:userId", authMiddleware(), getSingleUser);
 router.put("/user/user-profile/put-user/:userId", authMiddleware(), updateUser);
-router.put("/user/user-profile/put-password/:userId", authMiddleware(), updatePassword);
+router.put(
+  "/user/user-profile/put-password/:userId",
+  authMiddleware(),
+  updatePassword
+);
 router.delete("/user/user-delete/:userId", deleteUser);
 
 //verify
