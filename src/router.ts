@@ -30,7 +30,13 @@ import cors from "cors";
 export const router = Router();
 
 // Enable CORS from all origins
-router.use(cors());
+router.use(
+  cors({
+    origin: "https://kaution-client-side.vercel.app/",
+    allowedHeaders: ["*"],
+    credentials: true,
+  })
+);
 
 //categories
 // se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
