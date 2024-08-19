@@ -9,8 +9,6 @@ import { authMiddleware } from "./middlewares/AuthMiddleware";
 
 export const router = Router();
 
-
-
 //categories
 // se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
 router.get("/user/:userid/category", categoryGet);
