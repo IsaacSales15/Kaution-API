@@ -6,10 +6,17 @@ import { productPost, productGet, productDelete, productPut } from "./controller
 import { verify } from "./controllers/register-controllers/VerifyController";
 import { resendCode } from "./controllers/register-controllers/ResendCodeController";
 import { authMiddleware } from "./middlewares/AuthMiddleware";
+import cors from "cors";
 
 export const router = Router();
 
-
+router.use(
+  cors({
+    origin: "*",
+    allowedHeaders: ["*"],
+    credentials: true,
+  })
+)
 
 //categories
 // se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
