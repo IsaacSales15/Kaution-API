@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { prisma } from "../../database/prisma";
+import jwt from "jsonwebtoken";
 
 export const verify = async (req: Request, res: Response) => {
   try {
@@ -30,6 +31,15 @@ export const verify = async (req: Request, res: Response) => {
           verificationExpire: undefined,
         },
       });
+
+      const token = jwt.sign(
+        { userId: user.id },
+        process.env.JWT_SECRET as string,
+        { expiresIn: process.env.JWT_EXPIRES_IN }
+      );
+
+      res.cookie("authToken", token, { httpOnly: true, secure: true });
+
       return res.json({ success: true });
     } else {
       return res.status(400).json({ error: "Invalid code" });
