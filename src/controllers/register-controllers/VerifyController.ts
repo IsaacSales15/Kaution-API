@@ -38,9 +38,9 @@ export const verify = async (req: Request, res: Response) => {
         { expiresIn: process.env.JWT_EXPIRES_IN }
       );
 
-      res.cookie("authToken", token, { httpOnly: true, secure: true });
+      res.cookie("authToken", token, { httpOnly: false, secure: true });
 
-      return res.json({ success: true });
+      return res.json({ success: true, token });
     } else {
       return res.status(400).json({ error: "Invalid code" });
     }
