@@ -53,7 +53,6 @@ export const createUser = async (req: Request, res: Response) => {
         .json({ error: "User created, but email not sent" });
     }
 
-
     return res.status(201).json(user);
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
@@ -94,9 +93,15 @@ export const loginUser = async (req: Request, res: Response) => {
       { expiresIn: process.env.JWT_EXPIRES_IN }
     );
 
+    const responsePayload = {
+      userID: user.id,
+      token,
+      message: "Login successful",
+    };
+
     res.cookie("authToken", token, { httpOnly: true, secure: true });
 
-    return res.status(200).json({ token, message: "Login successful" });
+    return res.status(200).json(responsePayload);
   } catch (error) {
     console.log(error);
     return res.status(500).json({ error: "Internal server error" });
