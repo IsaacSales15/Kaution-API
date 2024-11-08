@@ -23,7 +23,7 @@ export const getSingleUser = async (req: Request, res: Response) => {
         name: true,
         email: true,
         created: true,
-        uptadeAt: true,
+        updateAt: true,
       },
     });
     return res.status(200).json(user);
@@ -46,14 +46,18 @@ export const deleteUser = async (req: Request, res: Response) => {
     await prisma.product.deleteMany({
       where: {
         category: {
+          inventory: {
           userId: String(userId),
+        }
         },
       },
     });
 
     await prisma.category.deleteMany({
       where: {
+        inventory: {
         userId: String(userId),
+      }
       },
     });
 
@@ -92,7 +96,7 @@ export const updatePassword = async (req: Request, res: Response) => {
         password: String(password),
       },
       select: {
-        uptadeAt: true,
+        updateAt: true,
       },
     });
     return res.status(200).json(hashPassword);
@@ -116,7 +120,7 @@ export const updateUser = async (req: Request, res: Response) => {
       select: {
         name: true,
         id: true,
-        uptadeAt: true,
+        updateAt: true,
       },
     });
     return res.status(200).json({ success: true, user });

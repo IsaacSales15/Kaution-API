@@ -1,27 +1,11 @@
 import { Router } from "express";
-import {
-  categoryGet,
-  categoryPost,
-  categoryDelete,
-  categoryPut,
+import {categoryGet,categoryPost,categoryDelete,categoryPut,
 } from "./controllers/category-controllers/CategoryController";
-import {
-  createUser,
-  loginUser,
+import {createUser,loginUser,
 } from "./controllers/register-controllers/user_actions-controllers/UserController";
-import {
-  getUsers,
-  getSingleUser,
-  deleteUser,
-  deleteAll,
-  updateUser,
-  updatePassword,
+import { getUsers,getSingleUser,deleteUser,deleteAll,updateUser,updatePassword,
 } from "./controllers/register-controllers/user_actions-controllers/UserActionsController";
-import {
-  productPost,
-  productGet,
-  productDelete,
-  productPut,
+import { productPost, productGet, productDelete, productPut,
 } from "./controllers/product-controllers/ProductsController";
 import { verify } from "./controllers/register-controllers/verify_actions-controllers/VerifyController";
 import { resendCode } from "./controllers/register-controllers/verify_actions-controllers/ResendCodeController";
@@ -49,7 +33,6 @@ router.put("/user/category/:categoryid/product/:productid", productPut);
 //user
 router.post("/user/user-create", createUser);
 router.post("/user/user-login", loginUser);
-router.get("/user/user-getAll", getUsers);
 router.get("/user/user-profile/:userId", authMiddleware(), getSingleUser);
 router.put("/user/user-profile/put-user/:userId", authMiddleware(), updateUser);
 router.put(
@@ -58,8 +41,11 @@ router.put(
   updatePassword
 );
 router.delete("/user/user-delete/:userId", deleteUser);
-router.delete("/user/deletAll", deleteAll);
 
 //verify
 router.post("/user/user-verify", verify);
 router.post("/user/user-verify/resend", resendCode);
+
+//Dev routes
+router.get("/user/user-getAll", getUsers);
+router.delete("/user/deletAll", deleteAll);
