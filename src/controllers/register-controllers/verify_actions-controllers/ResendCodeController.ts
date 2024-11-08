@@ -1,7 +1,7 @@
 import { Response, Request } from "express";
-import { prisma } from "../../database/prisma";
-import { sendEmail } from "../../services/EmailService";
-import { generateCode } from "../../utils/generateCode";
+import { prisma } from "../../../database/prisma";
+import { sendEmail } from "../../../services/EmailService";
+import { generateCode } from "../../../utils/generateCode";
 
 export const resendCode = async (req: Request, res: Response) => {
   try {

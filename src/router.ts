@@ -1,16 +1,36 @@
 import { Router } from "express";
-import { categoryGet, categoryPost, categoryDelete, categoryPut } from "./controllers/category-controllers/CategoryController";
-import { createUser, loginUser } from "./controllers/register-controllers/UserController";
-import { getUsers, getSingleUser, deleteUser, updateUser, updatePassword } from "./controllers/register-controllers/UserActionsController";
-import { productPost, productGet, productDelete, productPut } from "./controllers/product-controllers/ProductsController";
-import { verify } from "./controllers/register-controllers/VerifyController";
-import { resendCode } from "./controllers/register-controllers/ResendCodeController";
+import {
+  categoryGet,
+  categoryPost,
+  categoryDelete,
+  categoryPut,
+} from "./controllers/category-controllers/CategoryController";
+import {
+  createUser,
+  loginUser,
+} from "./controllers/register-controllers/user_actions-controllers/UserController";
+import {
+  getUsers,
+  getSingleUser,
+  deleteUser,
+  deleteAll,
+  updateUser,
+  updatePassword,
+} from "./controllers/register-controllers/user_actions-controllers/UserActionsController";
+import {
+  productPost,
+  productGet,
+  productDelete,
+  productPut,
+} from "./controllers/product-controllers/ProductsController";
+import { verify } from "./controllers/register-controllers/verify_actions-controllers/VerifyController";
+import { resendCode } from "./controllers/register-controllers/verify_actions-controllers/ResendCodeController";
 import { authMiddleware } from "./middlewares/AuthMiddleware";
 import cors from "cors";
 
 export const router = Router();
 
-router.use(cors())
+router.use(cors());
 
 //categories
 // se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
@@ -32,8 +52,13 @@ router.post("/user/user-login", loginUser);
 router.get("/user/user-getAll", getUsers);
 router.get("/user/user-profile/:userId", authMiddleware(), getSingleUser);
 router.put("/user/user-profile/put-user/:userId", authMiddleware(), updateUser);
-router.put("/user/user-profile/put-password/:userId", authMiddleware(), updatePassword);
+router.put(
+  "/user/user-profile/put-password/:userId",
+  authMiddleware(),
+  updatePassword
+);
 router.delete("/user/user-delete/:userId", deleteUser);
+router.delete("/user/deletAll", deleteAll);
 
 //verify
 router.post("/user/user-verify", verify);

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { prisma } from "../../database/prisma";
+import { prisma } from "../../../database/prisma";
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -70,6 +70,16 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteAll = async (req: Request, res: Response) => {
+  try {
+    const users = await prisma.user.deleteMany();
+    return res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+};
+
 export const updatePassword = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;
@@ -83,15 +93,14 @@ export const updatePassword = async (req: Request, res: Response) => {
       },
       select: {
         uptadeAt: true,
-
-      }
+      },
     });
     return res.status(200).json(hashPassword);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
   }
-}
+};
 
 export const updateUser = async (req: Request, res: Response) => {
   try {
@@ -102,18 +111,17 @@ export const updateUser = async (req: Request, res: Response) => {
         id: String(userId),
       },
       data: {
-        name: String(name)
+        name: String(name),
       },
       select: {
         name: true,
         id: true,
         uptadeAt: true,
-
-      }
+      },
     });
-    return res.status(200).json({success: true, user});
+    return res.status(200).json({ success: true, user });
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
   }
-}
+};
