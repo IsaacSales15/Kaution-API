@@ -8,22 +8,22 @@ datasource db {
 }
 
 model User {
-  id                 String    @id @default(auto()) @map("_id") @db.ObjectId
-  email              String    @unique
+  id                 String      @id @default(auto()) @map("_id") @db.ObjectId
+  email              String      @unique
   name               String
   password           String
-  isVerified         Boolean?  @default(false)
+  isVerified         Boolean?    @default(false)
   verificationCode   String?
   verificationExpire DateTime
-  Estoque            Estoque?
-  created            DateTime? @default(now())
-  uptadeAt           DateTime? @updatedAt
-  AuthCode           AuthCode?
+  inventories        Inventory[]
+  created            DateTime?   @default(now())
+  updateAt           DateTime?   @updatedAt
+  authCodes          AuthCode[]
 }
 
 model AuthCode {
   id      String   @id @default(auto()) @map("_id") @db.ObjectId
-  userId  String   @unique @db.ObjectId
+  userId  String   @db.ObjectId
   code    String
   expire  DateTime
   created DateTime @default(now())
@@ -32,25 +32,25 @@ model AuthCode {
   @@index([userId, expire])
 }
 
-model Estoque {
-  id       String    @id @default(auto()) @map("_id") @db.ObjectId
-  user     User      @relation(fields: [userId], references: [id])
-  userId   String    @unique @db.ObjectId
-  name     String
-  updateAt DateTime @updatedAt
-  createAt DateTime @default(now())
-  Category Category?
+model Inventory {
+  id         String     @id @default(auto()) @map("_id") @db.ObjectId
+  user       User       @relation(fields: [userId], references: [id])
+  userId     String     @db.ObjectId
+  name       String
+  updateAt   DateTime   @updatedAt
+  createAt   DateTime   @default(now())
+  categories Category[]
 }
 
 model Category {
-  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String?
-  estoque     Estoque  @relation(fields: [estoqueId], references: [id])
-  estoqueId   String   @unique @db.ObjectId
-  products    Product?
-  created     DateTime @default(now())
-  uptadeAt    DateTime @updatedAt
+  inventory   Inventory @relation(fields: [inventoryId], references: [id])
+  inventoryId String    @db.ObjectId
+  products    Product[]
+  created     DateTime  @default(now())
+  updateAt    DateTime  @updatedAt
 }
 
 model Product {
@@ -59,7 +59,7 @@ model Product {
   description String?
   quantity    Int
   category    Category @relation(fields: [categoryId], references: [id])
-  categoryId  String   @unique @db.ObjectId
+  categoryId  String   @db.ObjectId
   created     DateTime @default(now())
-  uptadeAt    DateTime @updatedAt
+  updateAt    DateTime @updatedAt
 }
