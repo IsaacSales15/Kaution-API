@@ -18,17 +18,17 @@ router.use(cors());
 
 //categories
 // se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
-router.get("/user/:userid/category", categoryGet);
-router.post("/user/:userid/category", categoryPost);
-router.delete("/user/category/:categoryid", categoryDelete);
-router.put("/user/category/:categoryid", categoryPut);
+router.get("/user/:userid/category", categoryGet, authMiddleware());
+router.post("/user/:userid/category", categoryPost, authMiddleware());
+router.delete("/user/category/:categoryid", categoryDelete, authMiddleware());
+router.put("/user/category/:categoryid", categoryPut, authMiddleware());
 
 //products
 // se o front quiser pegar todos os produtos, ele passa 'all' no parâmetro 'categoryid'.
-router.get("/user/category/:categoryid/product", productGet);
-router.post("/user/category/:categoryid/product", productPost);
-router.delete("/user/category/:categoryid/product/:productid", productDelete);
-router.put("/user/category/:categoryid/product/:productid", productPut);
+router.get("/user/category/:categoryid/product", productGet, authMiddleware());
+router.post("/user/category/:categoryid/product", productPost, authMiddleware());
+router.delete("/user/category/:categoryid/product/:productid", productDelete, authMiddleware());
+router.put("/user/category/:categoryid/product/:productid", productPut, authMiddleware());
 
 //user
 router.post("/user/user-create", createUser);
