@@ -23,7 +23,7 @@ export const getSingleUser = async (req: Request, res: Response) => {
         name: true,
         email: true,
         created: true,
-        updateAt: true,
+        uptadeAt: true,
       },
     });
     return res.status(200).json(user);
@@ -46,18 +46,14 @@ export const deleteUser = async (req: Request, res: Response) => {
     await prisma.product.deleteMany({
       where: {
         category: {
-          inventory: {
           userId: String(userId),
-        }
         },
       },
     });
 
     await prisma.category.deleteMany({
       where: {
-        inventory: {
         userId: String(userId),
-      }
       },
     });
 
@@ -67,16 +63,6 @@ export const deleteUser = async (req: Request, res: Response) => {
       },
     });
 
-    return res.status(200).json(users);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
-  }
-};
-
-export const deleteAll = async (req: Request, res: Response) => {
-  try {
-    const users = await prisma.user.deleteMany();
     return res.status(200).json(users);
   } catch (error) {
     console.log(error);
@@ -96,15 +82,16 @@ export const updatePassword = async (req: Request, res: Response) => {
         password: String(password),
       },
       select: {
-        updateAt: true,
-      },
+        uptadeAt: true,
+
+      }
     });
     return res.status(200).json(hashPassword);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
   }
-};
+}
 
 export const updateUser = async (req: Request, res: Response) => {
   try {
@@ -115,17 +102,18 @@ export const updateUser = async (req: Request, res: Response) => {
         id: String(userId),
       },
       data: {
-        name: String(name),
+        name: String(name)
       },
       select: {
         name: true,
         id: true,
-        updateAt: true,
-      },
+        uptadeAt: true,
+
+      }
     });
-    return res.status(200).json({ success: true, user });
+    return res.status(200).json({success: true, user});
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
   }
-};
+}
