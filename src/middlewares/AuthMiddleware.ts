@@ -1,5 +1,6 @@
 import { verify } from "jsonwebtoken";
 import { Request, Response, NextFunction } from "express";
+import { prisma } from "../database/prisma";
 
 interface DecodedToken {
   userId: string;
@@ -23,6 +24,29 @@ export function authMiddleware(permissions?: string[]) {
 
       const decoded = verify(token, JWT_SECRET) as DecodedToken;
       req.user = { userId: decoded.userId };
+
+    if(permissions) {
+      const user = await prisma.user.findUnique({
+        where: {
+          id: decoded.userId
+        },
+        include: {
+          UserAccess: {
+            select: {
+              Access: {
+                select: {
+                  name: true
+                }
+              }
+            }
+          }
+        }
+      });
+      const userPermissions = user?.UserAccess.map((na) => na.Access?.name) ?? [];
+      const hasPermissions = permissions.some((p) =>
+        userPermissions.includes(p))
+      //Continuar essa merda
+    }
 
       return next();
 
