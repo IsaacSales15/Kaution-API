@@ -23,7 +23,7 @@ export const getSingleUser = async (req: Request, res: Response) => {
         name: true,
         email: true,
         created: true,
-        uptadeAt: true,
+        updateAt: true,
       },
     });
     return res.status(200).json(user);
@@ -33,42 +33,42 @@ export const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteUser = async (req: Request, res: Response) => {
-  try {
-    const { userId } = req.params;
+// export const deleteUser = async (req: Request, res: Response) => {
+//   try {
+//     const { userId } = req.params;
 
-    await prisma.authCode.deleteMany({
-      where: {
-        userId: String(userId),
-      },
-    });
+//     await prisma.authCode.deleteMany({
+//       where: {
+//         userId: String(userId),
+//       },
+//     });
 
-    await prisma.product.deleteMany({
-      where: {
-        category: {
-          userId: String(userId),
-        },
-      },
-    });
+//     await prisma.product.deleteMany({
+//       where: {
+//         category: {
+//           userId: String(userId),
+//         },
+//       },
+//     });
 
-    await prisma.category.deleteMany({
-      where: {
-        userId: String(userId),
-      },
-    });
+//     await prisma.category.deleteMany({
+//       where: {
+//         userId: String(userId),
+//       },
+//     });
 
-    const users = await prisma.user.deleteMany({
-      where: {
-        id: String(userId),
-      },
-    });
+//     const users = await prisma.user.deleteMany({
+//       where: {
+//         id: String(userId),
+//       },
+//     });
 
-    return res.status(200).json(users);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json(error);
-  }
-};
+//     return res.status(200).json(users);
+//   } catch (error) {
+//     console.log(error);
+//     return res.status(500).json(error);
+//   }
+// };
 
 export const updatePassword = async (req: Request, res: Response) => {
   try {
@@ -82,7 +82,7 @@ export const updatePassword = async (req: Request, res: Response) => {
         password: String(password),
       },
       select: {
-        uptadeAt: true,
+        updateAt: true,
 
       }
     });
@@ -107,7 +107,7 @@ export const updateUser = async (req: Request, res: Response) => {
       select: {
         name: true,
         id: true,
-        uptadeAt: true,
+        updateAt: true,
 
       }
     });

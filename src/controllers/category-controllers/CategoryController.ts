@@ -7,12 +7,12 @@ let today = getUTCTime(todayISO);
 
 export const categoryGet = async (req: Request, res: Response) => {
     try {
-        const requserid = req.params.userid;
+        const reqinventoryid = req.params.inventoryid;
 
-        if (requserid != "all") {
+        if (reqinventoryid != "all") {
             const categories = await prisma.category.findMany({
                 where: {
-                    userId: requserid
+                    inventoryId: reqinventoryid
                 }
             });
             return res.status(200).json(categories);
@@ -29,19 +29,19 @@ export const categoryGet = async (req: Request, res: Response) => {
 
 export const categoryPost = async (req: Request, res: Response) => {
     try {
-        const requserid = req.params.userid;
+        const reqinventoryid = req.params.inventoryid;
 
-        if (!requserid) {
+        if (!reqinventoryid) {
             return res.status(400).json({ error: "User ID is required" });
         }
 
         await prisma.category.create({
             data: {
-                userId: requserid,
+                inventoryId: reqinventoryid,
                 name: req.body.name,
                 description: req.body.description,
                 created: today,
-                uptadeAt: today
+                updateAt: today
             }
         });
 
@@ -94,7 +94,7 @@ export const categoryPut = async (req: Request, res: Response) => {
             data: {
                 name: req.body.name,
                 description: req.body.description,
-                uptadeAt: today
+                updateAt: today
             }
         });
 

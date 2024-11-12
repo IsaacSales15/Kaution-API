@@ -1,9 +1,11 @@
 import { Router } from "express";
+import {inventoryGet,inventoryPost,inventoryDelete,inventoryPut,
+} from "./controllers/inventory-controller/InventoryController";
 import {categoryGet,categoryPost,categoryDelete,categoryPut,
 } from "./controllers/category-controllers/CategoryController";
 import {createUser,loginUser,
 } from "./controllers/register-controllers/user_actions-controllers/UserController";
-import { getUsers,getSingleUser,deleteUser,updateUser,updatePassword,
+import { getUsers,getSingleUser,updateUser,updatePassword,
 } from "./controllers/register-controllers/user_actions-controllers/UserActionsController";
 import { productPost, productGet, productDelete, productPut,
 } from "./controllers/product-controllers/ProductsController";
@@ -15,6 +17,14 @@ import cors from "cors";
 export const router = Router();
 
 router.use(cors());
+
+// inventory
+// se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
+router.get("/user/:userid/inventory", inventoryGet);
+router.post("/user/:userid/inventory", inventoryPost);
+router.delete("/user/inventory/:inventoryid", inventoryDelete);
+router.put("/user/inventory/:inventoryid", inventoryPut);
+
 
 //categories
 // se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
@@ -40,7 +50,7 @@ router.put(
   authMiddleware(),
   updatePassword
 );
-router.delete("/user/user-delete/:userId", deleteUser);
+// router.delete("/user/user-delete/:userId", deleteUser);
 
 //verify
 router.post("/user/user-verify", verify);

@@ -49,7 +49,7 @@ export const productPost = async (req: Request, res: Response) => {
                 id: reqcategoryid,
             },
             data: {
-                uptadeAt: today,
+                updateAt: today,
             }
         });
 
@@ -80,7 +80,7 @@ export const productDelete = async (req: Request, res: Response) => {
                 id: reqcategoryid,
             },
             data: {
-                uptadeAt: today,
+                updateAt: today,
             }
         });
 
@@ -117,7 +117,7 @@ export const productPut = async (req: Request, res: Response) => {
                 id: reqcategoryid,
             },
             data: {
-                uptadeAt: today,
+                updateAt: today,
             }
         });
 
