@@ -28,8 +28,8 @@ router.put("/user/inventory/:inventoryid", inventoryPut);
 
 //categories
 // se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
-router.get("/user/:userid/category", categoryGet, authMiddleware());
-router.post("/user/:userid/category", categoryPost, authMiddleware());
+router.get("/user/:inventoryid/category", categoryGet, authMiddleware());
+router.post("/user/:inventoryid/category", categoryPost, authMiddleware());
 router.delete("/user/category/:categoryid", categoryDelete, authMiddleware());
 router.put("/user/category/:categoryid", categoryPut, authMiddleware());
 
