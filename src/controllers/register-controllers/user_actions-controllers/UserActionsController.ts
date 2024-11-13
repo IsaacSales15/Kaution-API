@@ -22,6 +22,7 @@ export const getSingleUser = async (req: Request, res: Response) => {
         id: true,
         name: true,
         email: true,
+        InventoryAccess: true,
         created: true,
         updateAt: true,
       },

@@ -10,15 +10,6 @@
 
 > Projeto de gerenciamento de itens 
 
-
-## 💻 Pré-requisitos
-
-Antes de começar, verifique se você atendeu aos seguintes requisitos:
-
-- Você instalou a versão mais recente de `<linguagem / dependência / requeridos>`
-- Você tem uma máquina `<Windows / Linux / Mac>`. Indique qual sistema operacional é compatível / não compatível.
-- Você leu `<guia / link / documentação_relacionada_ao_projeto>`.
-
 ## 🚀 Instalando <Kaution-API>
 
 Para instalar o <Kaution-API>, siga estas etapas:
@@ -26,7 +17,7 @@ Para instalar o <Kaution-API>, siga estas etapas:
 Linux e macOS:
 
 ```
-<comando_de_instalação>
+<npm install>
 ```
 
 Windows:
