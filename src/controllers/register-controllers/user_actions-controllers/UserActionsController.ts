@@ -22,11 +22,21 @@ export const getSingleUser = async (req: Request, res: Response) => {
         id: true,
         name: true,
         email: true,
-        InventoryAccess: true,
-        created: true,
+        createdAt: true,
         updateAt: true,
+        InventoryAccess: {
+          select: {
+            role: true,
+            inventory: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
+
     return res.status(200).json(user);
   } catch (error) {
     console.error("Error:", error);
@@ -34,42 +44,28 @@ export const getSingleUser = async (req: Request, res: Response) => {
   }
 };
 
-// export const deleteUser = async (req: Request, res: Response) => {
-//   try {
-//     const { userId } = req.params;
+export const deleteUser = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
 
-//     await prisma.authCode.deleteMany({
-//       where: {
-//         userId: String(userId),
-//       },
-//     });
+    await prisma.authCode.deleteMany({
+      where: {
+        userId: String(userId),
+      },
+    });
 
-//     await prisma.product.deleteMany({
-//       where: {
-//         category: {
-//           userId: String(userId),
-//         },
-//       },
-//     });
+    const users = await prisma.user.deleteMany({
+      where: {
+        id: String(userId),
+      },
+    });
 
-//     await prisma.category.deleteMany({
-//       where: {
-//         userId: String(userId),
-//       },
-//     });
-
-//     const users = await prisma.user.deleteMany({
-//       where: {
-//         id: String(userId),
-//       },
-//     });
-
-//     return res.status(200).json(users);
-//   } catch (error) {
-//     console.log(error);
-//     return res.status(500).json(error);
-//   }
-// };
+    return res.status(200).json(users);
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json(error);
+  }
+};
 
 export const updatePassword = async (req: Request, res: Response) => {
   try {
@@ -84,15 +80,14 @@ export const updatePassword = async (req: Request, res: Response) => {
       },
       select: {
         updateAt: true,
-
-      }
+      },
     });
     return res.status(200).json(hashPassword);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
   }
-}
+};
 
 export const updateUser = async (req: Request, res: Response) => {
   try {
@@ -103,18 +98,17 @@ export const updateUser = async (req: Request, res: Response) => {
         id: String(userId),
       },
       data: {
-        name: String(name)
+        name: String(name),
       },
       select: {
         name: true,
         id: true,
         updateAt: true,
-
-      }
+      },
     });
-    return res.status(200).json({success: true, user});
+    return res.status(200).json({ success: true, user });
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
   }
-}
+};

@@ -39,7 +39,7 @@ export const createUser = async (req: Request, res: Response) => {
         name: true,
         email: true,
         id: true,
-        created: true,
+        createdAt: true,
       },
     });
 

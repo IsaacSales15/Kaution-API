@@ -1,11 +1,11 @@
 import { Router } from "express";
-import {inventoryGet,inventoryPost,inventoryDelete,inventoryPut,
+import {inventoryGet,inventoryPost,inventoryDelete,inventoryPut, deleteAllInventories
 } from "./controllers/inventory-controller/InventoryController";
 import {categoryGet,categoryPost,categoryDelete,categoryPut,
 } from "./controllers/category-controllers/CategoryController";
 import {createUser,loginUser,
 } from "./controllers/register-controllers/user_actions-controllers/UserController";
-import { getUsers,getSingleUser,updateUser,updatePassword,
+import { getUsers,getSingleUser,updateUser,updatePassword, deleteUser
 } from "./controllers/register-controllers/user_actions-controllers/UserActionsController";
 import { productPost, productGet, productDelete, productPut,
 } from "./controllers/product-controllers/ProductsController";
@@ -23,6 +23,7 @@ router.use(cors());
 router.get("/user/:userid/inventory", inventoryGet);
 router.post("/user/:userid/inventory", inventoryPost);
 router.delete("/user/inventory/:inventoryid", inventoryDelete);
+router.delete("/user/inventories/deleteAll", deleteAllInventories);
 router.put("/user/inventory/:inventoryid", inventoryPut);
 
 
@@ -41,20 +42,20 @@ router.delete("/user/category/:categoryid/product/:productid", productDelete, au
 router.put("/user/category/:categoryid/product/:productid", productPut, authMiddleware());
 
 //user
-router.post("/user/user-create", createUser);
-router.post("/user/user-login", loginUser);
-router.get("/user/user-profile/:userId", authMiddleware(), getSingleUser);
-router.put("/user/user-profile/put-user/:userId", authMiddleware(), updateUser);
+router.post("/user/create", createUser);
+router.post("/user/login", loginUser);
+router.get("/user/profile/:userId", authMiddleware(), getSingleUser);
+router.put("/user/profile/put-user/:userId", authMiddleware(), updateUser);
 router.put(
-  "/user/user-profile/put-password/:userId",
+  "/user/profile/put-password/:userId",
   authMiddleware(),
   updatePassword
 );
-// router.delete("/user/user-delete/:userId", deleteUser);
+router.delete("/user/delete/:userId", deleteUser);
 
 //verify
-router.post("/user/user-verify", verify);
-router.post("/user/user-verify/resend", resendCode);
+router.post("/user/verify", verify);
+router.post("/user/verify/resend", resendCode);
 
 //Dev routes
-router.get("/user/user-getAll", getUsers);
+router.get("/user/getAll", getUsers);

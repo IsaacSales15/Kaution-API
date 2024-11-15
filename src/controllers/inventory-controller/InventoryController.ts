@@ -29,28 +29,28 @@ export const inventoryGet = async (req: Request, res: Response) => {
 export const inventoryPost = async (req: Request, res: Response) => {
   try {
     const requserid = req.params.userid;
+    const { name } = req.body
 
     if (!requserid) {
       return res.status(400).json({ error: "User ID is required" });
     }
 
-    await prisma.inventory.create({
+    const inventoryCreated = await prisma.inventory.create({
       data: {
         userId: requserid,
-        name: req.body.name,
-        createAt: today,
+        name,
+        createdAt: today,
         updateAt: today,
       },
     });
 
-    await prisma.inventoryAccess.update({
-        where: {
-          id: requserid,
-        },
-        data: {
-          role: Role.ADM,
-        },
-      });
+    await prisma.inventoryAccess.create({
+      data: {
+        userId: requserid,
+        inventoryId: inventoryCreated.id,
+        role: Role.ADM,
+      },
+    });
 
     return res.status(201).json({ message: "Inventory created" });
   } catch (error) {
@@ -72,19 +72,6 @@ export const inventoryDelete = async (req: Request, res: Response) => {
       },
     });
 
-    await prisma.category.deleteMany({
-      where: {
-        inventoryId: reqinventoryid,
-      },
-    });
-
-    await prisma.product.deleteMany({
-      where: {
-        category: {
-          inventoryId: reqinventoryid,
-        },
-      },
-    });
 
     return res.status(200).json({ message: "Inventory deleted" });
   } catch (error) {
@@ -113,5 +100,15 @@ export const inventoryPut = async (req: Request, res: Response) => {
     res.status(200).json({ message: "Inventory updated" });
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const deleteAllInventories = async (req: Request, res: Response) => {
+  try {
+    await prisma.inventory.deleteMany({});
+
+    return res.status(200).json({ message: "All inventories have been deleted successfully" });
+  } catch (error) {
+    return res.status(500).json({ error: "Internal server error" });
   }
 };
