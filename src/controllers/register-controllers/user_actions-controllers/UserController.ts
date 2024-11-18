@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import { prisma } from "../../database/prisma";
+import { prisma } from "../../../database/prisma";
 import { hash, compare } from "bcryptjs";
-import { sendEmail } from "../../services/EmailService";
-import { generateCode } from "../../utils/generateCode";
+import { sendEmail } from "../../../services/EmailService";
+import { generateCode } from "../../../utils/generateCode";
 import jwt from "jsonwebtoken";
 
 export const createUser = async (req: Request, res: Response) => {
@@ -39,7 +39,7 @@ export const createUser = async (req: Request, res: Response) => {
         name: true,
         email: true,
         id: true,
-        created: true,
+        createdAt: true,
       },
     });
 

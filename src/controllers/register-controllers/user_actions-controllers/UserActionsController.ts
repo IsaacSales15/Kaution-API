@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { prisma } from "../../database/prisma";
+import { prisma } from "../../../database/prisma";
 
 export const getUsers = async (req: Request, res: Response) => {
   try {
@@ -22,10 +22,21 @@ export const getSingleUser = async (req: Request, res: Response) => {
         id: true,
         name: true,
         email: true,
-        created: true,
-        uptadeAt: true,
+        createdAt: true,
+        updateAt: true,
+        InventoryAccess: {
+          select: {
+            role: true,
+            inventory: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
       },
     });
+
     return res.status(200).json(user);
   } catch (error) {
     console.error("Error:", error);
@@ -38,20 +49,6 @@ export const deleteUser = async (req: Request, res: Response) => {
     const { userId } = req.params;
 
     await prisma.authCode.deleteMany({
-      where: {
-        userId: String(userId),
-      },
-    });
-
-    await prisma.product.deleteMany({
-      where: {
-        category: {
-          userId: String(userId),
-        },
-      },
-    });
-
-    await prisma.category.deleteMany({
       where: {
         userId: String(userId),
       },
@@ -82,16 +79,15 @@ export const updatePassword = async (req: Request, res: Response) => {
         password: String(password),
       },
       select: {
-        uptadeAt: true,
-
-      }
+        updateAt: true,
+      },
     });
     return res.status(200).json(hashPassword);
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
   }
-}
+};
 
 export const updateUser = async (req: Request, res: Response) => {
   try {
@@ -102,18 +98,17 @@ export const updateUser = async (req: Request, res: Response) => {
         id: String(userId),
       },
       data: {
-        name: String(name)
+        name: String(name),
       },
       select: {
         name: true,
         id: true,
-        uptadeAt: true,
-
-      }
+        updateAt: true,
+      },
     });
-    return res.status(200).json({success: true, user});
+    return res.status(200).json({ success: true, user });
   } catch (error) {
     console.log(error);
     return res.status(500).json(error);
   }
-}
+};

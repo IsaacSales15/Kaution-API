@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { prisma } from "../../database/prisma";
+import { prisma } from "../../../database/prisma";
 import jwt from "jsonwebtoken";
 
 export const verify = async (req: Request, res: Response) => {
