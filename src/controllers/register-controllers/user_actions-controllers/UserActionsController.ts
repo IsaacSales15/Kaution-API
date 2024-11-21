@@ -24,7 +24,7 @@ export const getSingleUser = async (req: Request, res: Response) => {
         email: true,
         createdAt: true,
         updateAt: true,
-        InventoryAccess: {
+        inventoryAccess: {
           select: {
             role: true,
             inventory: {

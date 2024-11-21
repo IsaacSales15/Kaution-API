@@ -40,7 +40,7 @@ export const categoryPost = async (req: Request, res: Response) => {
                 inventoryId: reqinventoryid,
                 name: req.body.name,
                 description: req.body.description,
-                createdAt: today,
+                created: today,
                 updateAt: today
             }
         });
