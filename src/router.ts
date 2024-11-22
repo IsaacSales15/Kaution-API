@@ -1,4 +1,6 @@
 import { Router } from "express";
+import { notificationGet,notificationPost,notificationDelete,notificationPut, deleteAllnotifications
+} from "./controllers/notification-controllers/NotificationController";
 import {inventoryGet,inventoryPost,inventoryDelete,inventoryPut, deleteAllInventories
 } from "./controllers/inventory-controller/InventoryController";
 import {categoryGet,categoryPost,categoryDelete,categoryPut,
@@ -17,6 +19,13 @@ import cors from "cors";
 export const router = Router();
 
 router.use(cors());
+
+// notification
+router.get("/user/:userid/notifications", notificationGet);
+router.post("/user/:userid/notifications", notificationPost);
+router.delete("/user/notifications/:notificationid", notificationDelete);
+router.delete("/user/notifications/deleteAll", deleteAllnotifications);
+router.put("/user/notifications/:notificationid", notificationPut);
 
 // inventory
 // se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
