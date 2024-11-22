@@ -83,7 +83,6 @@ model InventoryAccess {
 enum Role {
   ADM
   USER
-  VISITOR
 }
 
 model Notifications {
@@ -95,3 +94,4 @@ model Notifications {
   viewedAt DateTime @default(now())
   viewed   Boolean  @default(false)
 }
+
