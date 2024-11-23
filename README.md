@@ -20,7 +20,7 @@ Este é um projeto de API backend desenvolvido com TypeScript, utilizando o fram
 1. Clone este repositório:
 
    ```
-   git clone <url_do_repositorio>
+   git clone [<url_do_repositorio>](https://github.com/IsaacSales15/Kaution-API)
 
    ```
 
