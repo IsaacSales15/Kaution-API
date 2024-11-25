@@ -7,7 +7,7 @@ import jwt from "jsonwebtoken";
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, namertag } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ error: "Name and email are required" });
@@ -30,6 +30,7 @@ export const createUser = async (req: Request, res: Response) => {
       data: {
         name: String(name),
         email: String(email),
+        namertag: String(namertag),
         password: hashPassword,
         isVerified: false,
         verificationCode: code,
