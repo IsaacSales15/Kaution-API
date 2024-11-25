@@ -7,9 +7,9 @@ let today = getUTCTime(todayISO);
 
 export const invitationPost = async (req: Request, res: Response) => {
     try {
-        const reqinventoryid = req.params.inventoryid;
-        const requserinvitebyid = req.params.invitebyid;
-        const requserinviteforid = req.params.inviteid;
+        const reqinventoryid = req.body.inventoryid;
+        const requserinvitebyid = req.body.invitebyid;
+        const requserinviteforid = req.body.inviteid;
 
         if (!reqinventoryid || !requserinvitebyid || !requserinviteforid) {
             return res.status(400).json({ error: "InventoryID, InviteBy ID and Invite ID is required" });
@@ -29,7 +29,7 @@ export const invitationPost = async (req: Request, res: Response) => {
     }
 };
 
-export const invitationUptade = async (req: Request, res: Response) => {
+export const invitationPut = async (req: Request, res: Response) => {
     try {
         const reqinvitationid = req.params.invitationid;
 
@@ -78,8 +78,9 @@ export const invitationGet = async (req: Request, res: Response) =>
     try {
         const requserid = req.params.userid;
 
-        if (!requserid) {
-            return res.status(400).json({ error: "User ID is required" });
+        if (requserid == "all") {
+            const data = await prisma.invitation.findMany();
+            return res.status(200).json(data);
         }
 
         const data = await prisma.invitation.findMany({
@@ -113,13 +114,3 @@ export const invitationGetById = async (req: Request, res: Response) => {
         return res.status(500).json({ error: "Internal server error" });
     }
 };
-
-export const invitationGetAll = async (req: Request, res: Response) => {
-    try {
-        const data = await prisma.invitation.findMany();
-
-        return res.status(200).json(data);
-    } catch (error) {
-        return res.status(500).json({ error: "Internal server error" });
-    }
-}

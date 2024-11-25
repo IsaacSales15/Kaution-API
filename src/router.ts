@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { invitationGet, invitationPost, invitationDelete, invitationPut, invitationGetById } from "./controllers/invitation-controllers/invitationController";
 import { notificationGet,notificationPost,notificationDelete,notificationPut, deleteAllnotifications
 } from "./controllers/notification-controllers/NotificationController";
 import {inventoryGet,inventoryPost,inventoryDelete,inventoryPut, deleteAllInventories
@@ -20,6 +21,14 @@ export const router = Router();
 
 router.use(cors());
 
+// invitation
+router.get("/user/:userid/invitation", invitationGet); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
+router.post("/user/invitation", invitationPost); // req body: inventoryid, invitebyid, inviteid
+router.delete("/user/invitation/:invitationid", invitationDelete);
+router.put("/user/invitation/:invitationid", invitationPut);
+  // invitation routes dev
+  router.get("/user/invitation/:invitationid", invitationGetById); // achar pelo id do convite
+
 // notification
 router.get("/user/:userid/notifications", notificationGet);
 router.post("/user/:userid/notifications", notificationPost);
@@ -28,8 +37,8 @@ router.delete("/user/notifications/deleteAll", deleteAllnotifications);
 router.put("/user/notifications/:notificationid", notificationPut);
 
 // inventory
-// se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
-router.get("/user/:userid/inventory", inventoryGet);
+
+router.get("/user/:userid/inventory", inventoryGet); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
 router.post("/user/:userid/inventory", inventoryPost);
 router.delete("/user/inventory/:inventoryid", inventoryDelete);
 router.delete("/user/inventories/deleteAll", deleteAllInventories);
@@ -37,15 +46,15 @@ router.put("/user/inventory/:inventoryid", inventoryPut);
 
 
 //categories
-// se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
-router.get("/user/:inventoryid/category", categoryGet, authMiddleware());
+
+router.get("/user/:inventoryid/category", categoryGet, authMiddleware()); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
 router.post("/user/:inventoryid/category", categoryPost, authMiddleware());
 router.delete("/user/category/:categoryid", categoryDelete, authMiddleware());
 router.put("/user/category/:categoryid", categoryPut, authMiddleware());
 
 //products
-// se o front quiser pegar todos os produtos, ele passa 'all' no parâmetro 'categoryid'.
-router.get("/user/category/:categoryid/product", productGet, authMiddleware());
+
+router.get("/user/category/:categoryid/product", productGet, authMiddleware()); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
 router.post("/user/category/:categoryid/product", productPost, authMiddleware());
 router.delete("/user/category/:categoryid/product/:productid", productDelete, authMiddleware());
 router.put("/user/category/:categoryid/product/:productid", productPut, authMiddleware());
