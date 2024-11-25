@@ -99,12 +99,14 @@ model Notifications {
 }
 
 model Invitation {
-  id          String    @id @default(auto()) @map("_id") @db.ObjectId
-  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
-  inventoryId String    @db.ObjectId
-  inviteBy    User      @relation(fields: [inviteById], references: [id], name: "inviteBy")
-  inviteById  String    @db.ObjectId
-  inviteFor   User      @relation(fields: [inviteForId], references: [id], name: "inviteFor")
-  inviteForId String    @db.ObjectId
-  inviteStatus Boolean @default(false)
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  inventory    Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  inventoryId  String    @db.ObjectId
+  inviteBy     User      @relation(fields: [inviteById], references: [id], name: "inviteBy")
+  inviteById   String    @db.ObjectId
+  inviteFor    User      @relation(fields: [inviteForId], references: [id], name: "inviteFor")
+  inviteForId  String    @db.ObjectId
+  inviteStatus Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  acceptAt     DateTime  @updatedAt
 }
