@@ -5,7 +5,7 @@ import { getUTCTime } from "../../utils/getUTCTime";
 let todayISO = new Date().toISOString();
 let today = getUTCTime(todayISO);
 
-export const categoryPost = async (req: Request, res: Response) => {
+export const invitationPost = async (req: Request, res: Response) => {
     try {
         const reqinventoryid = req.params.inventoryid;
         const requserinvitebyid = req.params.invitebyid;
@@ -18,14 +18,13 @@ export const categoryPost = async (req: Request, res: Response) => {
         await prisma.invitation.create({
             data: {
                 inventoryId: reqinventoryid,
-<<<<<<< Updated upstream
-                inviteForId: requserinviteforid,
                 inviteById: requserinvitebyid,
+                inviteForId: requserinviteforid,
                 createdAt: today
             }
         });
 
-        return res.status(201).json({ message: "Invitation created" });
+        return res.status(201).json({ message: "invitation created" });
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
     }
@@ -33,7 +32,7 @@ export const categoryPost = async (req: Request, res: Response) => {
 
 export const invitationUptade = async (req: Request, res: Response) => {
     try {
-        const reqinvitationid = req.params.inventoryid;
+        const reqinvitationid = req.params.invitationid;
 
         if (!reqinvitationid) {
             return res.status(400).json({ error: "Invitation ID is required" });
@@ -41,26 +40,86 @@ export const invitationUptade = async (req: Request, res: Response) => {
 
         await prisma.invitation.update({
             where: {
-                id: reqinvitationid,
+                id: reqinvitationid
             },
             data: {
-                inviteStatus: true,
+                inviteStatus: true
             }
         });
 
-        return res.status(201).json({ message: "Invitation is accepted" });
-=======
-                inviteBy: requserinvitebyid,
-                inviteFor: requserinviteforid,
-                description: req.body.description,
-                created: today,
-                updateAt: today
-            }
-        });
-
-        return res.status(201).json({ message: "Category created" });
->>>>>>> Stashed changes
+        return res.status(200).json({ message: "invitation is accepted" });
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
     }
 };
+
+export const invitationDelete = async (req: Request, res: Response) => {
+    try {
+        const reqinvitationid = req.params.invitationid;        
+
+        if (!reqinvitationid) {
+            return res.status(400).json({ error: "Invitation ID is required" });
+        }
+
+        await prisma.invitation.deleteMany({
+            where: {
+                id: reqinvitationid
+            }
+        });
+
+        return res.status(200).json({ message: "invitation deleted" });
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+export const invitationGet = async (req: Request, res: Response) => 
+{
+    try {
+        const requserid = req.params.userid;
+
+        if (!requserid) {
+            return res.status(400).json({ error: "User ID is required" });
+        }
+
+        const data = await prisma.invitation.findMany({
+            where: {
+                inviteForId: requserid
+            }
+        });
+
+        return res.status(200).json(data);
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+export const invitationGetById = async (req: Request, res: Response) => {
+    try {
+        const reqinvitationid = req.params.invitationid;
+
+        if (!reqinvitationid) {
+            return res.status(400).json({ error: "Invitation ID is required" });
+        }
+
+        const data = await prisma.invitation.findUnique({
+            where: {
+                id: reqinvitationid
+            }
+        });
+
+        return res.status(200).json(data);
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+export const invitationGetAll = async (req: Request, res: Response) => {
+    try {
+        const data = await prisma.invitation.findMany();
+
+        return res.status(200).json(data);
+    } catch (error) {
+        return res.status(500).json({ error: "Internal server error" });
+    }
+}
