@@ -22,6 +22,8 @@ model User {
   notifications      Notifications[]
   inventoryAccess    InventoryAccess[]
   inventories        Inventory[]
+  useInviteBy        Invitation[]      @relation("inviteBy")
+  useInviteFor       Invitation[]      @relation("inviteFor")
 }
 
 model AuthCode {
@@ -44,6 +46,7 @@ model Inventory {
   createdAt       DateTime          @default(now())
   categories      Category[]
   inventoryAccess InventoryAccess[]
+  Invitation      Invitation[]
 }
 
 model Category {
@@ -95,3 +98,12 @@ model Notifications {
   viewed   Boolean  @default(false)
 }
 
+model Invitation {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  inventoryId String    @db.ObjectId
+  inviteBy    User      @relation(fields: [inviteById], references: [id], name: "inviteBy")
+  inviteById  String    @db.ObjectId
+  inviteFor   User      @relation(fields: [inviteForId], references: [id], name: "inviteFor")
+  inviteForId String    @db.ObjectId
+}
