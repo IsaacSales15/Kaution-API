@@ -107,6 +107,9 @@ model Invitation {
   inviteFor    User      @relation(fields: [inviteForId], references: [id], name: "inviteFor")
   inviteForId  String    @db.ObjectId
   inviteStatus Boolean   @default(false)
+<<<<<<< Updated upstream
   createdAt    DateTime  @default(now())
   acceptAt     DateTime  @updatedAt
+=======
+>>>>>>> Stashed changes
 }

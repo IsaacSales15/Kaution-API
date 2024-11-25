@@ -2,7 +2,7 @@ import { Router } from "express";
 import { notificationGet,notificationPost,notificationDelete,notificationPut, deleteAllnotifications
 } from "./controllers/notification-controllers/NotificationController";
 import {inventoryGet,inventoryPost,inventoryDelete,inventoryPut, deleteAllInventories
-} from "./controllers/inventory-controller/InventoryController";
+} from "./controllers/inventory-controllers/InventoryController";
 import {categoryGet,categoryPost,categoryDelete,categoryPut,
 } from "./controllers/category-controllers/CategoryController";
 import {createUser,loginUser,

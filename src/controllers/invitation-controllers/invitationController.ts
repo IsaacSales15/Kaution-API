@@ -5,11 +5,19 @@ import { getUTCTime } from "../../utils/getUTCTime";
 let todayISO = new Date().toISOString();
 let today = getUTCTime(todayISO);
 
+<<<<<<< Updated upstream
 export const invitationPost = async (req: Request, res: Response) => {
     try {
         const reqinventoryid = req.params.inventoryid;
         const requserinviteforid = req.params.inviteid;
         const requserinvitebyid = req.params.invitebyid;
+=======
+export const categoryPost = async (req: Request, res: Response) => {
+    try {
+        const reqinventoryid = req.params.inventoryid;
+        const requserinvitebyid = req.params.invitebyid;
+        const requserinviteforid = req.params.inviteid;
+>>>>>>> Stashed changes
 
         if (!reqinventoryid || !requserinvitebyid || !requserinviteforid) {
             return res.status(400).json({ error: "InventoryID, InviteBy ID and Invite ID is required" });
@@ -18,6 +26,7 @@ export const invitationPost = async (req: Request, res: Response) => {
         await prisma.invitation.create({
             data: {
                 inventoryId: reqinventoryid,
+<<<<<<< Updated upstream
                 inviteForId: requserinviteforid,
                 inviteById: requserinvitebyid,
                 createdAt: today
@@ -48,6 +57,17 @@ export const invitationUptade = async (req: Request, res: Response) => {
         });
 
         return res.status(201).json({ message: "Invitation is accepted" });
+=======
+                inviteBy: requserinvitebyid,
+                inviteFor: requserinviteforid,
+                description: req.body.description,
+                created: today,
+                updateAt: today
+            }
+        });
+
+        return res.status(201).json({ message: "Category created" });
+>>>>>>> Stashed changes
     } catch (error) {
         return res.status(500).json({ error: "Internal server error" });
     }
