@@ -67,6 +67,16 @@ export const deleteUser = async (req: Request, res: Response) => {
   }
 };
 
+export const deleteAll = async (req: Request, res: Response) => {
+  try {
+    const users = await prisma.user.deleteMany();
+
+    return res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).json(error);
+  }
+};
+
 export const updatePassword = async (req: Request, res: Response) => {
   try {
     const { userId } = req.params;

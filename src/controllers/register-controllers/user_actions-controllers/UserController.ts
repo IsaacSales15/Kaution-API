@@ -9,7 +9,7 @@ export const createUser = async (req: Request, res: Response) => {
   try {
     const { name, email, password, namertag } = req.body;
 
-    if (!name || !email || !password) {
+    if (!name || !email || !password || !namertag) {
       return res.status(400).json({ error: "Name and email are required" });
     }
 

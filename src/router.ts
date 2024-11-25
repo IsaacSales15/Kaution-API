@@ -8,7 +8,7 @@ import {categoryGet,categoryPost,categoryDelete,categoryPut,
 } from "./controllers/category-controllers/CategoryController";
 import {createUser,loginUser,
 } from "./controllers/register-controllers/user_actions-controllers/UserController";
-import { getUsers,getSingleUser,updateUser,updatePassword, deleteUser
+import { getUsers,getSingleUser,updateUser,updatePassword, deleteUser, deleteAll
 } from "./controllers/register-controllers/user_actions-controllers/UserActionsController";
 import { productPost, productGet, productDelete, productPut,
 } from "./controllers/product-controllers/ProductsController";
@@ -77,3 +77,4 @@ router.post("/user/verify/resend", resendCode);
 
 //Dev routes
 router.get("/user/getAll", getUsers);
+router.delete("/user/deleteAll", deleteAll);
