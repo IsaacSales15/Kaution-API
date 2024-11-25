@@ -20,7 +20,6 @@ export const invitationPost = async (req: Request, res: Response) => {
                 inventoryId: reqinventoryid,
                 inviteById: requserinvitebyid,
                 inviteForId: requserinviteforid,
-                createdAt: today
             }
         });
 
@@ -43,7 +42,8 @@ export const invitationUptade = async (req: Request, res: Response) => {
                 id: reqinvitationid
             },
             data: {
-                inviteStatus: true
+                inviteStatus: true,
+                acceptAt: today
             }
         });
 
