@@ -45,9 +45,8 @@ export const sendEmail = async (email: string, name: string, code: string) => {
   return transporter.sendMail(mailOptions);
 };
 
-export const sandInvitationEmail = async (
+export const sendInvitationEmail = async (
   namertagInviter: string,
-  namertag: string,
   emailReciver: string
 ) => {
   const mailOptions = {
