@@ -53,7 +53,7 @@ export const sendInvitationEmail = async (
     from: process.env.MAIL_USERNAME,
     to: emailReciver,
     subject: `Convite de ${namertagInviter} compartilhar um inventário Kaution com você!!!`,
-    html:{path: 'src/views/EmailFormat.html'}
+    html:{path: 'src/views/emailInvitation.html'}
   };
 
   return transporter.sendMail(mailOptions);

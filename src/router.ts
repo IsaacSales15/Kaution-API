@@ -23,7 +23,7 @@ router.use(cors());
 
 // invitation
 router.get("/user/:userid/invitation", invitationGet); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
-router.post("/user/invitation", invitationPost); // req body: inventoryid, invitebyid, inviteid
+router.post("/user/invitation", invitationPost); // req body: inventoryid, invitebyid, invitefor
 router.delete("/user/invitation/:invitationid", invitationDelete);
 router.put("/user/invitation/:invitationid", invitationPut);
   // invitation routes dev
