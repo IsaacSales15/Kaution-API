@@ -1,16 +1,51 @@
 import { Router } from "express";
-import { invitationGet, invitationPost, invitationDelete, invitationPut, invitationGetById } from "./controllers/invitation-controllers/invitationController";
-import { notificationGet,notificationPost,notificationDelete,notificationPut, deleteAllnotifications
+import {
+  AcceptInvitation,
+  DeclineInvitation,
+} from "./controllers/invitation-controllers/accep_decline-controllers/AccepDeclineController";
+import {
+  invitationPost,
+  invitationGet,
+  invitationDelete,
+  invitationGetById,
+} from "./controllers/invitation-controllers/InvitationController";
+import {
+  notificationGet,
+  notificationPost,
+  notificationDelete,
+  notificationPut,
+  deleteAllnotifications,
 } from "./controllers/notification-controllers/NotificationController";
-import {inventoryGet,inventoryPost,inventoryDelete,inventoryPut, deleteAllInventories
+import {
+  inventoryGet,
+  inventoryPost,
+  inventoryDelete,
+  inventoryPut,
+  deleteAllInventories,
 } from "./controllers/inventory-controllers/InventoryController";
-import {categoryGet,categoryPost,categoryDelete,categoryPut,
+import {
+  categoryGet,
+  categoryPost,
+  categoryDelete,
+  categoryPut,
 } from "./controllers/category-controllers/CategoryController";
-import {createUser,loginUser,
+import {
+  createUser,
+  loginUser,
 } from "./controllers/register-controllers/user_actions-controllers/UserController";
-import { getUsers,getSingleUser,updateUser,updatePassword, deleteUser, deleteAll
+import {
+  getUsers,
+  getSingleUser,
+  updateUser,
+  updatePassword,
+  deleteUser,
+  deleteAll,
 } from "./controllers/register-controllers/user_actions-controllers/UserActionsController";
-import { productPost, productGet, productDelete, productPut,
+import {
+  productPost,
+  productGet,
+  productDelete,
+  productPut,
 } from "./controllers/product-controllers/ProductsController";
 import { verify } from "./controllers/register-controllers/verify_actions-controllers/VerifyController";
 import { resendCode } from "./controllers/register-controllers/verify_actions-controllers/ResendCodeController";
@@ -25,9 +60,12 @@ router.use(cors());
 router.get("/user/:userid/invitation", invitationGet); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
 router.post("/user/invitation", invitationPost); // req body: inventoryid, invitebyid, invitefor
 router.delete("/user/invitation/:invitationid", invitationDelete);
-router.put("/user/invitation/:invitationid", invitationPut);
-  // invitation routes dev
-  router.get("/user/invitation/:invitationid", invitationGetById); // achar pelo id do convite
+
+// invitation routes dev
+router.get("/user/invitation/:invitationid", invitationGetById); // achar pelo id do convite
+
+router.put("/user/invitation/accept/:invitationid", AcceptInvitation);
+router.put("/user/invitation/decline/:invitationid", DeclineInvitation);
 
 // notification
 router.get("/user/:userid/notifications", notificationGet);
@@ -44,7 +82,6 @@ router.delete("/user/inventory/:inventoryid", inventoryDelete);
 router.delete("/user/inventories/deleteAll", deleteAllInventories);
 router.put("/user/inventory/:inventoryid", inventoryPut);
 
-
 //categories
 
 router.get("/user/:inventoryid/category", categoryGet, authMiddleware()); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
@@ -55,9 +92,21 @@ router.put("/user/category/:categoryid", categoryPut, authMiddleware());
 //products
 
 router.get("/user/category/:categoryid/product", productGet, authMiddleware()); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
-router.post("/user/category/:categoryid/product", productPost, authMiddleware());
-router.delete("/user/category/:categoryid/product/:productid", productDelete, authMiddleware());
-router.put("/user/category/:categoryid/product/:productid", productPut, authMiddleware());
+router.post(
+  "/user/category/:categoryid/product",
+  productPost,
+  authMiddleware()
+);
+router.delete(
+  "/user/category/:categoryid/product/:productid",
+  productDelete,
+  authMiddleware()
+);
+router.put(
+  "/user/category/:categoryid/product/:productid",
+  productPut,
+  authMiddleware()
+);
 
 //user
 router.post("/user/create", createUser);
