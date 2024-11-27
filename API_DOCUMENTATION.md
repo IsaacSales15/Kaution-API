@@ -113,9 +113,9 @@ Requer Autenticação: Sim (middleware authMiddleware).
 {
   "name": "string"
 }
-Resposta de Sucesso (200)
-json
-Copiar código
+```
+**Resposta de Sucesso:** `(200)`
+```json
 {
   "success": true,
   "user": {
@@ -156,7 +156,7 @@ Copiar código
 
 **Parâmetros da URL**
 - `userId` (string): ID do usuário.
-**Resposta** de Sucesso (200)
+**Resposta de Sucesso:** `(200)`
 ```json
 {
   "count": "number"
