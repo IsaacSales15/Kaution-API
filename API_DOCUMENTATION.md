@@ -130,6 +130,7 @@ Requer Autenticação: Sim (middleware authMiddleware).
 
 ### **5. Atualizar Senha**
 **Endpoint:** `PUT /user/profile/put-password/:userId`
+
 **Descrição:** Atualiza a senha do usuário.
 Requer Autenticação: Sim (middleware authMiddleware).
 
