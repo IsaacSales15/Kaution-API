@@ -19,10 +19,9 @@ Este é um projeto de API backend desenvolvido com TypeScript, utilizando o fram
 
 1. Clone este repositório:
 
-   ```
-   git clone github.com/IsaacSales15/Kaution-API
-
-   ```
+```
+git clone github.com/IsaacSales15/Kaution-API
+```
 
 2. Instale as dependências:
 
@@ -50,6 +49,10 @@ npm run dev
  - Gerenciamento de inventários, categorias e  produtos.
 - Sistema de autenticação e registro de usuários.
 - Recursos para verificação e reenvio de códigos de ativação.
+
+## 📖 Documentação da API
+
+Para informações detalhadas sobre as rotas e respostas da API, consulte a [Documentação da API](./API_DOCUMENTATION.md).
 
 ## 📝 Licença
 
