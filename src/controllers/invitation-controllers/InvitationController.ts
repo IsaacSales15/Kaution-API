@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { prisma } from "../../database/prisma";
 import { getUTCTime } from "../../utils/getUTCTime";
 import { sendInvitationEmail } from "../../services/EmailService";
+import { generateCode } from "../../utils/generateCode";
 
 let todayISO = new Date().toISOString();
 let today = getUTCTime(todayISO);
@@ -38,7 +39,10 @@ export const invitationPost = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "User indicated does not exist" });
     }
     /////////////////////////////////////////////////////////////////////////////////////////////
+    
+    const code = generateCode();
 
+    console.log(userInviteForExists.email, userInviteByExists.namertag);
     await prisma.invitation.create({
       data: {
         inventoryId: reqinventoryid,
@@ -46,13 +50,18 @@ export const invitationPost = async (req: Request, res: Response) => {
         inviteForId: requserinviteforid,
         inviteStatus: false,
         createdAt: today,
+        code: code
       },
     });
 
+
+
+
     try {
       await sendInvitationEmail(
+        userInviteByExists.namertag,
         userInviteForExists.email,
-        userInviteByExists.namertag
+        code
       );
     } catch (error) {
       console.log("Error: ", error);
@@ -82,6 +91,16 @@ export const invitationDelete = async (req: Request, res: Response) => {
     return res.status(200).json({ message: "invitation deleted" });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });
+  }
+};
+
+export const deleteAllinvites = async (req: Request, res: Response) => {
+  try {
+    const invites = await prisma.invitation.deleteMany();
+
+    return res.status(200).json(invites);
+  } catch (error) {
+    return res.status(500).json(error);
   }
 };
 

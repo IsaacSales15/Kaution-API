@@ -109,4 +109,5 @@ model Invitation {
   inviteStatus Boolean   @default(false)
   createdAt    DateTime  @default(now())
   acceptAt     DateTime  @updatedAt
+  code         String    @unique
 }

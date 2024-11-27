@@ -2,11 +2,13 @@ import { Router } from "express";
 import {
   AcceptInvitation,
   DeclineInvitation,
+  invitationcodeGet,
 } from "./controllers/invitation-controllers/accep_decline-controllers/AccepDeclineController";
 import {
   invitationPost,
   invitationGet,
   invitationDelete,
+  deleteAllinvites,
   invitationGetById,
 } from "./controllers/invitation-controllers/InvitationController";
 import {
@@ -60,12 +62,14 @@ router.use(cors());
 router.get("/user/:userid/invitation", invitationGet); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
 router.post("/user/invitation", invitationPost); // req body: inventoryid, invitebyid, invitefor
 router.delete("/user/invitation/:invitationid", invitationDelete);
+router.delete("/user/invitation/deleteAll", deleteAllinvites);
 
 // invitation routes dev
 router.get("/user/invitation/:invitationid", invitationGetById); // achar pelo id do convite
+router.get("/user/invitation/:code", invitationcodeGet);
+router.post("/user/invitation/accept/:code", AcceptInvitation);
+router.delete("/user/invitation/decline/:code", DeclineInvitation);
 
-router.put("/user/invitation/accept/:invitationid", AcceptInvitation);
-router.put("/user/invitation/decline/:invitationid", DeclineInvitation);
 
 // notification
 router.get("/user/:userid/notifications", notificationGet);
