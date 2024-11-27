@@ -140,9 +140,9 @@ Requer Autenticação: Sim (middleware authMiddleware).
 {
   "password": "string"
 }
-Resposta de Sucesso (200)
-json
-Copiar código
+```
+**Resposta de Sucesso:** `(200)`
+```json
 {
   "updateAt": "datetime"
 }
