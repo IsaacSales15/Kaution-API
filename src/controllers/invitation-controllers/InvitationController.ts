@@ -52,6 +52,18 @@ export const invitationPost = async (req: Request, res: Response) => {
       },
     });
 
+    const invitationExists = await prisma.invitation.findUnique({
+      where: {
+        id: String(inventoryid),
+        inviteById: String(invitebyid),
+        inviteForId: String(inviteforid)
+      }
+    })
+    
+    if(invitationExists){
+      return res.status(418).json({error: "Invitation already sent"})
+    }
+    
     try {
       await sendInvitationEmail(
         userInviteByExists.namertag,
