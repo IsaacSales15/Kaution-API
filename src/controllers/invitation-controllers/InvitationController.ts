@@ -9,19 +9,17 @@ let today = getUTCTime(todayISO);
 
 export const invitationPost = async (req: Request, res: Response) => {
   try {
-    const { reqinventoryid, requserinvitebyid, requserinviteforid } = req.body;
+    const { inventoryid, invitebyid, inviteforid } = req.body;
 
-    if (!reqinventoryid || !requserinvitebyid || !requserinviteforid) {
+    if (!inventoryid || !invitebyid || !inviteforid) {
       return res
         .status(400)
         .json({ error: "InventoryID, InviteBy ID and Invite ID is required" });
     }
-
-    // Campo de verificações
-    ////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
     const userInviteForExists = await prisma.user.findUnique({
       where: {
-        id: String(requserinviteforid),
+        id: String(inviteforid),
       },
     });
 
@@ -31,31 +29,28 @@ export const invitationPost = async (req: Request, res: Response) => {
 
     const userInviteByExists = await prisma.user.findUnique({
       where: {
-        id: String(requserinvitebyid),
+        id: String(invitebyid),
       },
     });
 
     if (!userInviteByExists) {
       return res.status(400).json({ error: "User indicated does not exist" });
     }
-    /////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////
     
     const code = generateCode();
 
     console.log(userInviteForExists.email, userInviteByExists.namertag);
     await prisma.invitation.create({
       data: {
-        inventoryId: reqinventoryid,
-        inviteById: requserinvitebyid,
-        inviteForId: requserinviteforid,
+        inventoryId: inventoryid,
+        inviteById: invitebyid,
+        inviteForId: inviteforid,
         inviteStatus: false,
         createdAt: today,
         code: code
       },
     });
-
-
-
 
     try {
       await sendInvitationEmail(

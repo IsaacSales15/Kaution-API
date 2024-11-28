@@ -67,7 +67,7 @@ router.delete("/user/invitation/deleteAll", deleteAllinvites);
 // invitation routes dev
 router.get("/user/invitation/:invitationid", invitationGetById); // achar pelo id do convite
 router.get("/user/invitation/:code", invitationcodeGet);
-router.post("/user/invitation/accept/:code", AcceptInvitation);
+router.put("/user/invitation/accept/:code", AcceptInvitation);
 router.delete("/user/invitation/decline/:code", DeclineInvitation);
 
 
