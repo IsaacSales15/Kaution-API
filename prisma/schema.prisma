@@ -32,7 +32,7 @@ model AuthCode {
   code      String
   expire    DateTime
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, expire])
 }
@@ -102,9 +102,9 @@ model Invitation {
   id           String    @id @default(auto()) @map("_id") @db.ObjectId
   inventory    Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
   inventoryId  String    @db.ObjectId
-  inviteBy     User      @relation(fields: [inviteById], references: [id], name: "inviteBy")
+  inviteBy     User      @relation(fields: [inviteById], references: [id], name: "inviteBy", onDelete: Cascade)
   inviteById   String    @db.ObjectId
-  inviteFor    User      @relation(fields: [inviteForId], references: [id], name: "inviteFor")
+  inviteFor    User      @relation(fields: [inviteForId], references: [id], name: "inviteFor", onDelete: Cascade)
   inviteForId  String    @db.ObjectId
   inviteStatus Boolean   @default(false)
   createdAt    DateTime  @default(now())
