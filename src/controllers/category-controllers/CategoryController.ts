@@ -30,20 +30,58 @@ export const categoryGet = async (req: Request, res: Response) => {
 export const categoryPost = async (req: Request, res: Response) => {
     try {
         const reqinventoryid = req.params.inventoryid;
+        const requserid = req.params.userid;
 
         if (!reqinventoryid) {
             return res.status(400).json({ error: "User ID is required" });
         }
 
-        await prisma.category.create({
-            data: {
-                inventoryId: reqinventoryid,
-                name: req.body.name,
-                description: req.body.description,
-                created: today,
-                updateAt: today
+        if (!requserid) {
+            return res.status(400).json({ error: "User ID is required" });
+        }
+
+        const userExists = await prisma.user.findUnique({
+            where: {
+                id: requserid
             }
         });
+
+        if (!userExists) {
+            return res.status(400).json({ error: "User does not exist" });
+        }
+
+        const inventoryExists = await prisma.inventory.findUnique({
+            where: {
+                id: reqinventoryid
+            }
+        });
+
+        if (!inventoryExists) {
+            return res.status(400).json({ error: "Inventory does not exist" });
+        }
+
+        const invitationExists = await prisma.invitation.findMany({
+            where: {
+                inventoryId: reqinventoryid,
+                inviteForId: requserid,
+                inviteStatus: true
+            }
+        });
+
+        console.log(invitationExists);
+
+
+        if (invitationExists || inventoryExists.userId == requserid) {
+            await prisma.category.create({
+                data: {
+                    inventoryId: reqinventoryid,
+                    name: req.body.name,
+                    description: req.body.description,
+                    created: today,
+                    updateAt: today
+                }
+            });
+        }
 
         return res.status(201).json({ message: "Category created" });
     } catch (error) {

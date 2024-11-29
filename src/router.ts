@@ -90,7 +90,7 @@ router.put("/user/inventory/:inventoryid", inventoryPut);
 //categories
 
 router.get("/user/:inventoryid/category", categoryGet, authMiddleware()); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
-router.post("/user/:inventoryid/category", categoryPost, authMiddleware());
+router.post("/:userid/:inventoryid/category", categoryPost, authMiddleware());
 router.delete("/user/category/:categoryid", categoryDelete, authMiddleware());
 router.put("/user/category/:categoryid", categoryPut, authMiddleware());
 
