@@ -35,7 +35,7 @@
 
 **Erros Possíveis:**
 
-- `400:` Nome, email, senha ou namertag ausente ou usuário já existente.`
+- `400:` Nome, email, senha ou namertag ausente ou usuário já existente.
 
 - `500:` Erro interno no servidor.
 
