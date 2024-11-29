@@ -51,37 +51,30 @@ export const sendEmail = async (email: string, name: string, code: string) => {
   return transporter.sendMail(mailOptions);
 };
 
-export const sendInvitationEmail = async (
-  namertagInviter: string,
-  emailReciver: string,
-  code: string
-) => {
-  const mailOptions = {
-    from: process.env.MAIL_USERNAME,
-    to: emailReciver,
-    subject: `Convite de ${namertagInviter} compartilhar um inventário Kaution com você!!!`,
-    amp: `
-    <!doctype html>
-   <html ⚡4email>
-      <div style="font-family: 'Inter', sans-serif; background-color: white; padding: 20px; border-radius: 5px; text-align: center;">
-        <h2 style="margin: 10px 0;">${namertagInviter} está compartilhando um inventário Kaution com você!</h2>
-        <p style="font-size: 0.9em; color: #888;">Aceite o convite para ter acesso ao inventário.</p>
-        <div style="display: flex; justify-content: space-around; margin-top: 20px;">
-          <form method="put" action-xhr="localhost:3000/user/invitation/accept/${code}">
-            <button type="submit" style="background-color: #29b6f6; border-radius: 5px; padding: 10px 20px; color: white; border: none; cursor: pointer;">Aceitar</button>
-          </form>
-          <form action="localhost:3000/user/invitation/decline/${code}" method="delete" style="display: inline-block;">
-            <button type="submit" style="background-color: #ff5252; border-radius: 5px; padding: 10px 20px; color: white; border: none; cursor: pointer;">Recusar</button>
-          </form>
-        </div>
-      </div>
-    </html>
-    `,
-  };
-
-
-  //<form action="localhost:3000/user/invitation/accept/${code}" method="put" style="display: inline-block; margin-right: 10px;">
-  // <button type="submit" style="background-color: #29b6f6; border-radius: 5px; padding: 10px 20px; color: white; border: none; cursor: pointer;">Aceitar</button>
-  // </form>
-  return transporter.sendMail(mailOptions);
-};
+// export const sendInvitationEmail = async (
+//   namertagInviter: string,
+//   emailReciver: string,
+//   code: string
+// ) => {
+//   const mailOptions = {
+//     from: process.env.MAIL_USERNAME,
+//     to: emailReciver,
+//     subject: `Convite de ${namertagInviter} compartilhar um inventário Kaution com você!!!`,
+//     html: `
+//     <html>
+//       <body>
+//         <div style="font-family: 'Inter', sans-serif; background-color: white; padding: 20px; border-radius: 5px; text-align: center;">
+//           <h2>${namertagInviter} está compartilhando um inventário Kaution com você!</h2>
+//           <p>Aceite o convite para ter acesso ao inventário.</p>
+//           <div style="display: flex; justify-content: space-around; margin-top: 20px;">
+//             <a href="http://localhost:3000/accept/${code}" 
+//                style="background-color: #29b6f6; padding: 10px 20px; color: white; border-radius: 5px; text-decoration: none;">Aceitar</a>
+//             <a href="http://localhost:3000/decline/${code}" 
+//                style="background-color: #ff5252; padding: 10px 20px; color: white; border-radius: 5px; text-decoration: none;">Recusar</a>
+//           </div>
+//         </div>
+//       </body>
+//     </html>`,
+//   };
+//   return transporter.sendMail(mailOptions);
+// };

@@ -30,6 +30,8 @@ export const AcceptInvitation = async (req: Request, res: Response) => {
   try {
     const code = req.params.code;
 
+    res.send(code);
+
     if (!code) {
       return res.status(400).json({ error: "Invitation code is required" });
     }
