@@ -36,6 +36,27 @@ export const invitationPost = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "User indicated does not exist" });
     }
 
+    const inventoryExists = await prisma.inventory.findUnique({
+      where: {
+        id: String(inventoryid),
+      },
+    });
+
+    if (!inventoryExists) {
+      return res.status(400).json({ error: "Inventory indicated does not exist" });
+    }
+
+    const userIsOwner = await prisma.inventory.findUnique({
+      where: {
+        id: String(inventoryid),
+        userId: String(invitebyid),
+      },
+    });
+
+    if (!userIsOwner) {
+      return res.status(400).json({ error: "User indicated is not owner" });
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////
 
     const code = invitationCode();
@@ -63,6 +84,24 @@ export const invitationPost = async (req: Request, res: Response) => {
     // if(invitationExists){
     //   return res.status(418).json({error: "Invitation already sent"})
     // }
+    
+//   //   try {
+//   //     await sendInvitationEmail(
+//   //       userInviteByExists.namertag,
+//   //       userInviteForExists.email,
+//   //       code
+//   //     );
+//   //   } catch (error) {
+//   //     console.log("Error: ", error);
+//   //     console.log(error);
+//   //     return res.status(500).json({ error: "Email not sent" });
+//   //   }
+//   //   return res.status(201).json({ message: "invitation created" });
+//   // } catch (error) {
+//   //   return res.status(500).json({ error: "Internal server error" });
+//   // }
+// };
+
 
     return res.status(201).json({ message: "invitation created" });
   } catch (error) {
