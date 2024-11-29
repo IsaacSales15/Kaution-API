@@ -5,6 +5,8 @@ import { getUTCTime } from "../../utils/getUTCTime";
 let todayISO = new Date().toISOString();
 let today = getUTCTime(todayISO);
 
+
+
 export const categoryGet = async (req: Request, res: Response) => {
     try {
         const reqinventoryid = req.params.inventoryid;
@@ -60,7 +62,7 @@ export const categoryPost = async (req: Request, res: Response) => {
             return res.status(400).json({ error: "Inventory does not exist" });
         }
 
-        const invitationExists = await prisma.invitation.findMany({
+        const inventoryWithUser = await prisma.invitation.findMany({
             where: {
                 inventoryId: reqinventoryid,
                 inviteForId: requserid,
@@ -68,10 +70,21 @@ export const categoryPost = async (req: Request, res: Response) => {
             }
         });
 
-        console.log(invitationExists);
+        const userIsOwner = await prisma.inventory.findUnique({
+            where:{
+                id: reqinventoryid,
+                userId: requserid
+            }
+        });
+
+        if (!inventoryWithUser && !userIsOwner) {
+            return res.status(400).json({ error: "User does not have acess to this inventory" });
+        }
+
+        console.log(inventoryWithUser);
 
 
-        if (invitationExists || inventoryExists.userId == requserid) {
+        if (inventoryWithUser || userIsOwner) {
             await prisma.category.create({
                 data: {
                     inventoryId: reqinventoryid,
@@ -92,24 +105,66 @@ export const categoryPost = async (req: Request, res: Response) => {
 export const categoryDelete = async (req: Request, res: Response) => {
     try {
         const reqcategoryid = req.params.categoryid;
+        const requserid = req.params.userid;
 
         if (!reqcategoryid) {
             return res.status(400).json({ error: "Category ID are required" });
         };
 
-        await prisma.product.deleteMany({
+        const categoryExists = await prisma.category.findUnique({
             where: {
-                category: {
-                    id: reqcategoryid
+                id: reqcategoryid
+            }
+        });
+
+        const userExists = await prisma.user.findUnique({
+            where: {
+                id: requserid
+            }
+        });
+
+        const categoryWithUser = await prisma.category.findUnique({
+            where: {
+                id: reqcategoryid,
+                inventory: {
+                    Invitation: {
+                        some: {
+                            inviteForId: requserid,
+                            inviteStatus: true
+                        }
+                    }
                 }
             }
         });
 
+        const userIsOwner = await prisma.category.findUnique({
+            where: {
+                id: reqcategoryid,
+                inventory: {
+                    userId: requserid
+                }
+            }
+        });
+
+        if (!userExists) {
+            return res.status(400).json({ error: "User does not exist" });
+        }
+
+        if (!categoryExists) {
+            return res.status(400).json({ error: "Category does not exist" });
+        }
+
+        if (!categoryWithUser && !userIsOwner) {
+            return res.status(400).json({ error: "User does not have access to this category" });
+        }
+
+        if (categoryWithUser || userIsOwner) {
         await prisma.category.deleteMany({
             where: {
                 id: reqcategoryid,
             }
         });
+    }
 
         return res.status(200).json({ message: "Category deleted" });
     } catch (error) {
@@ -129,12 +184,62 @@ export const categoryDeleteAll = async (req: Request, res: Response) => {
 export const categoryPut = async (req: Request, res: Response) => {
     try {
         const reqcategoryid = req.params.categoryid;
+        const requserid = req.params.userid;
 
         if (!reqcategoryid) {
             return res.status(400).json({ error: "Category ID is required" });
         };
 
+        const categoryExists = await prisma.category.findUnique({
+            where: {
+                id: reqcategoryid
+            }
+        });
+
+        const userExists = await prisma.user.findUnique({
+            where: {
+                id: requserid
+            }
+        });
+
+        const categoryWithUser = await prisma.category.findUnique({
+            where: {
+                id: reqcategoryid,
+                inventory: {
+                    Invitation: {
+                        some: {
+                            inviteForId: requserid,
+                            inviteStatus: true
+                        }
+                    }
+                }
+            }
+        });
+
+        const userIsOwner = await prisma.category.findUnique({
+            where: {
+                id: reqcategoryid,
+                inventory: {
+                    userId: requserid
+                }
+            }
+        });
+
+        if (!userExists) {
+            return res.status(400).json({ error: "User does not exist" });
+        }
+
+        if (!categoryExists) {
+            return res.status(400).json({ error: "Category does not exist" });
+        }
+
+        if (!categoryWithUser && !userIsOwner) {
+            return res.status(400).json({ error: "User does not have access to this category" });
+        }
+
+        if (categoryWithUser || userIsOwner) {
         await prisma.category.update({
+
             where: {
                 id: reqcategoryid
             },
@@ -144,7 +249,7 @@ export const categoryPut = async (req: Request, res: Response) => {
                 updateAt: today
             }
         });
-
+    }
         res.status(200).json({ message: "Category updated" });
     } catch (error) {
         res.status(500).json({ error: "Internal server error" });
