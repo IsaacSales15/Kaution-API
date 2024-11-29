@@ -35,6 +35,16 @@ export const productPost = async (req: Request, res: Response) => {
             return res.status(400).json({ error: "Category ID is required" });
         };
 
+        const categoryExists = await prisma.category.findUnique({
+            where: {
+                id: reqcategoryid
+            }
+        });
+
+        if (!categoryExists){
+            return res.status(400).json({error: "Category not exists"})
+        }
+        
         await prisma.product.create({
             data: {
                 categoryId: reqcategoryid,
