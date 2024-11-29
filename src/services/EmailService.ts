@@ -67,10 +67,8 @@ export const sendInvitationEmail = async (
         <h2 style="margin: 10px 0;">${namertagInviter} está compartilhando um inventário Kaution com você!</h2>
         <p style="font-size: 0.9em; color: #888;">Aceite o convite para ter acesso ao inventário.</p>
         <div style="display: flex; justify-content: space-around; margin-top: 20px;">
-          <form style="display: inline-block; margin-right: 10px;">
-           <script action="localhost:3000/user/invitation/accept/${code}" method="put">
+          <form method="put" action-xhr="localhost:3000/user/invitation/accept/${code}">
             <button type="submit" style="background-color: #29b6f6; border-radius: 5px; padding: 10px 20px; color: white; border: none; cursor: pointer;">Aceitar</button>
-            </script>
           </form>
           <form action="localhost:3000/user/invitation/decline/${code}" method="delete" style="display: inline-block;">
             <button type="submit" style="background-color: #ff5252; border-radius: 5px; padding: 10px 20px; color: white; border: none; cursor: pointer;">Recusar</button>
@@ -81,5 +79,9 @@ export const sendInvitationEmail = async (
     `,
   };
 
+
+  //<form action="localhost:3000/user/invitation/accept/${code}" method="put" style="display: inline-block; margin-right: 10px;">
+  // <button type="submit" style="background-color: #29b6f6; border-radius: 5px; padding: 10px 20px; color: white; border: none; cursor: pointer;">Aceitar</button>
+  // </form>
   return transporter.sendMail(mailOptions);
 };
