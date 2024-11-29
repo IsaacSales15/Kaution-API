@@ -44,6 +44,7 @@ export const AcceptInvitation = async (req: Request, res: Response) => {
       },
     });
 
+    console.log("invitation is accepted");
     return res.status(200).json({ message: "invitation is accepted" });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });

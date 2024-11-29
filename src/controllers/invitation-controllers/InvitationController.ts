@@ -36,6 +36,7 @@ export const invitationPost = async (req: Request, res: Response) => {
     if (!userInviteByExists) {
       return res.status(400).json({ error: "User indicated does not exist" });
     }
+
 //////////////////////////////////////////////////////////////////////////////////////////
     
     const code = generateCode();
@@ -52,17 +53,17 @@ export const invitationPost = async (req: Request, res: Response) => {
       },
     });
 
-    const invitationExists = await prisma.invitation.findUnique({
-      where: {
-        id: String(inventoryid),
-        inviteById: String(invitebyid),
-        inviteForId: String(inviteforid)
-      }
-    })
+    // const invitationExists = await prisma.invitation.findMany({
+    //   where: {
+    //     inventoryId: String(inventoryid),
+    //     inviteById: String(invitebyid),
+    //     inviteForId: String(inviteforid)
+    //   }
+    // })
     
-    if(invitationExists){
-      return res.status(418).json({error: "Invitation already sent"})
-    }
+    // if(invitationExists){
+    //   return res.status(418).json({error: "Invitation already sent"})
+    // }
     
     try {
       await sendInvitationEmail(

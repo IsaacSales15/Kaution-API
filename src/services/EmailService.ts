@@ -60,21 +60,22 @@ export const sendInvitationEmail = async (
     from: process.env.MAIL_USERNAME,
     to: emailReciver,
     subject: `Convite de ${namertagInviter} compartilhar um inventário Kaution com você!!!`,
-    html: `
-      <div style="display: flex; justify-content: center; align-items: center; height: 100vh; width: 100vw;">
-        <div style="text-align: center; font-family: 'Inter', sans-serif; background-color: white; padding: 20px; border-radius: 5px;">
-          <p>Ola, <b>${namertagInviter}</b> te convida para compartilhar um inventário com você!</p>
-          <div style="display: flex; justify-content: center; align-items: center; margin-top: 20px;">
-            <a href="http://localhost:3000/user/accept/${code}">
-              <button style="background-color: #4f7ed4; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; color: white;">Aceitar convite</button>
-            </a>
-            <a href="http://localhost:3000/user/decline/${code}">
-              <button style="background-color: #4f7ed4; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-left: 10px; color: white;">Recusar convite</button>
-            </a>
-          </div>
-          <p style="margin-top: 20px; font-size: 0.9em; color: #888;">Powered by Kaution</p>
+    amp: `
+    <!doctype html>
+   <html ⚡4email>
+      <div style="font-family: 'Inter', sans-serif; background-color: white; padding: 20px; border-radius: 5px; text-align: center;">
+        <h2 style="margin: 10px 0;">${namertagInviter} está compartilhando um inventário Kaution com você!</h2>
+        <p style="font-size: 0.9em; color: #888;">Aceite o convite para ter acesso ao inventário.</p>
+        <div style="display: flex; justify-content: space-around; margin-top: 20px;">
+          <form action="localhost:3000/user/invitation/accept/${code}" method="put" style="display: inline-block; margin-right: 10px;">
+            <button type="submit" style="background-color: #29b6f6; border-radius: 5px; padding: 10px 20px; color: white; border: none; cursor: pointer;">Aceitar</button>
+          </form>
+          <form action="localhost:3000/user/invitation/decline/${code}" method="delete" style="display: inline-block;">
+            <button type="submit" style="background-color: #ff5252; border-radius: 5px; padding: 10px 20px; color: white; border: none; cursor: pointer;">Recusar</button>
+          </form>
         </div>
       </div>
+    </html>
     `,
   };
 
