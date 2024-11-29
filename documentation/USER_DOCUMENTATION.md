@@ -107,6 +107,7 @@ Requer Autenticação: Sim (middleware authMiddleware).
 
 **Parâmetros da URL**
 - `userId` (string): ID do usuário.
+
 **Request Body**
 
 ```json
