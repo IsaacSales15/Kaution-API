@@ -1,8 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../../database/prisma";
 import { getUTCTime } from "../../utils/getUTCTime";
-import { sendInvitationEmail } from "../../services/EmailService";
-import { generateCode } from "../../utils/generateCode";
+import { generateCode, invitationCode } from "../../utils/generateCode";
 
 let todayISO = new Date().toISOString();
 let today = getUTCTime(todayISO);
@@ -16,7 +15,7 @@ export const invitationPost = async (req: Request, res: Response) => {
         .status(400)
         .json({ error: "InventoryID, InviteBy ID and Invite ID is required" });
     }
-//////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////
     const userInviteForExists = await prisma.user.findUnique({
       where: {
         id: String(inviteforid),
@@ -37,9 +36,9 @@ export const invitationPost = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "User indicated does not exist" });
     }
 
-//////////////////////////////////////////////////////////////////////////////////////////
-    
-    const code = generateCode();
+    //////////////////////////////////////////////////////////////////////////////////////////
+
+    const code = invitationCode();
 
     console.log(userInviteForExists.email, userInviteByExists.namertag);
     await prisma.invitation.create({
@@ -49,7 +48,7 @@ export const invitationPost = async (req: Request, res: Response) => {
         inviteForId: inviteforid,
         inviteStatus: false,
         createdAt: today,
-        code: code
+        code: code,
       },
     });
 
@@ -60,22 +59,11 @@ export const invitationPost = async (req: Request, res: Response) => {
     //     inviteForId: String(inviteforid)
     //   }
     // })
-    
+
     // if(invitationExists){
     //   return res.status(418).json({error: "Invitation already sent"})
     // }
-    
-    try {
-      await sendInvitationEmail(
-        userInviteByExists.namertag,
-        userInviteForExists.email,
-        code
-      );
-    } catch (error) {
-      console.log("Error: ", error);
-      console.log(error);
-      return res.status(500).json({ error: "Email not sent" });
-    }
+
     return res.status(201).json({ message: "invitation created" });
   } catch (error) {
     return res.status(500).json({ error: "Internal server error" });

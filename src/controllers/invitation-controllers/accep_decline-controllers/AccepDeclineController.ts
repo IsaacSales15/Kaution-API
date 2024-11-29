@@ -38,7 +38,7 @@ export const AcceptInvitation = async (req: Request, res: Response) => {
 
     await prisma.invitation.update({
       where: {
-        id: code,
+        code: String(code),
       },
       data: {
         inviteStatus: true,
@@ -49,7 +49,7 @@ export const AcceptInvitation = async (req: Request, res: Response) => {
     console.log("invitation is accepted");
     return res.status(200).json({ message: "invitation is accepted" });
   } catch (error) {
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json(error);
   }
 };
 
@@ -63,7 +63,7 @@ export const DeclineInvitation = async (req: Request, res: Response) => {
 
     await prisma.invitation.update({
       where: {
-        id: code,
+        code: code,
       },
       data: {
         inviteStatus: false,
