@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { prisma } from "../../database/prisma";
 import { getUTCTime } from "../../utils/getUTCTime";
-import { generateCode, invitationCode } from "../../utils/generateCode";
+import { invitationCode } from "../../utils/generateCode";
 
 let todayISO = new Date().toISOString();
 let today = getUTCTime(todayISO);
@@ -57,6 +57,16 @@ export const invitationPost = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "User indicated is not owner" });
     }
 
+    const userAcceptInvitation = await prisma.inventoryAccess.findUnique({
+      where: {
+        id: inviteforid
+      }
+    });
+
+    if(userAcceptInvitation?.role === "USER") {
+      return res.status(400).json({error: "User is already part of the inventory."})
+    }
+
     //////////////////////////////////////////////////////////////////////////////////////////
 
     const code = invitationCode();
@@ -72,36 +82,6 @@ export const invitationPost = async (req: Request, res: Response) => {
         code: code,
       },
     });
-
-    // const invitationExists = await prisma.invitation.findMany({
-    //   where: {
-    //     inventoryId: String(inventoryid),
-    //     inviteById: String(invitebyid),
-    //     inviteForId: String(inviteforid)
-    //   }
-    // })
-
-    // if(invitationExists){
-    //   return res.status(418).json({error: "Invitation already sent"})
-    // }
-    
-//   //   try {
-//   //     await sendInvitationEmail(
-//   //       userInviteByExists.namertag,
-//   //       userInviteForExists.email,
-//   //       code
-//   //     );
-//   //   } catch (error) {
-//   //     console.log("Error: ", error);
-//   //     console.log(error);
-//   //     return res.status(500).json({ error: "Email not sent" });
-//   //   }
-//   //   return res.status(201).json({ message: "invitation created" });
-//   // } catch (error) {
-//   //   return res.status(500).json({ error: "Internal server error" });
-//   // }
-// };
-
 
     return res.status(201).json({ message: "invitation created" });
   } catch (error) {
