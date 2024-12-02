@@ -24,7 +24,7 @@ export const getSingleUser = async (req: Request, res: Response) => {
         email: true,
         createdAt: true,
         updateAt: true,
-        InventoryAccess: {
+        inventoryAccess: {
           select: {
             role: true,
             inventory: {
@@ -63,6 +63,16 @@ export const deleteUser = async (req: Request, res: Response) => {
     return res.status(200).json(users);
   } catch (error) {
     console.log(error);
+    return res.status(500).json(error);
+  }
+};
+
+export const deleteAll = async (req: Request, res: Response) => {
+  try {
+    const users = await prisma.user.deleteMany();
+
+    return res.status(200).json(users);
+  } catch (error) {
     return res.status(500).json(error);
   }
 };

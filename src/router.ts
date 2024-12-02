@@ -1,13 +1,54 @@
 import { Router } from "express";
-import {inventoryGet,inventoryPost,inventoryDelete,inventoryPut, deleteAllInventories
-} from "./controllers/inventory-controller/InventoryController";
-import {categoryGet,categoryPost,categoryDelete,categoryPut,
+import {
+  AcceptInvitation,
+  DeclineInvitation,
+  invitationcodeGet,
+} from "./controllers/invitation-controllers/accep_decline-controllers/AccepDeclineController";
+import {
+  invitationPost,
+  invitationGet,
+  invitationDelete,
+  deleteAllinvites,
+  invitationGetById,
+} from "./controllers/invitation-controllers/InvitationController";
+import {
+  notificationGet,
+  notificationPost,
+  notificationDelete,
+  notificationPut,
+  deleteAllnotifications,
+} from "./controllers/notification-controllers/NotificationController";
+import {
+  inventoryGet,
+  inventoryPost,
+  inventoryDelete,
+  inventoryPut,
+  deleteAllInventories,
+} from "./controllers/inventory-controllers/InventoryController";
+import {
+  categoryGet,
+  categoryPost,
+  categoryDelete,
+  categoryDeleteAll,
+  categoryPut,
 } from "./controllers/category-controllers/CategoryController";
-import {createUser,loginUser,
+import {
+  createUser,
+  loginUser,
 } from "./controllers/register-controllers/user_actions-controllers/UserController";
-import { getUsers,getSingleUser,updateUser,updatePassword, deleteUser
+import {
+  getUsers,
+  getSingleUser,
+  updateUser,
+  updatePassword,
+  deleteUser,
+  deleteAll,
 } from "./controllers/register-controllers/user_actions-controllers/UserActionsController";
-import { productPost, productGet, productDelete, productPut,
+import {
+  productPost,
+  productGet,
+  productDelete,
+  productPut,
 } from "./controllers/product-controllers/ProductsController";
 import { verify } from "./controllers/register-controllers/verify_actions-controllers/VerifyController";
 import { resendCode } from "./controllers/register-controllers/verify_actions-controllers/ResendCodeController";
@@ -18,28 +59,60 @@ export const router = Router();
 
 router.use(cors());
 
+// invitation
+router.get("/user/:userid/invitation", invitationGet); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
+router.post("/user/invitation", invitationPost); // req body: inventoryid, invitebyid, invitefor
+router.delete("/user/invitation/:invitationid", invitationDelete);
+router.delete("/user/invitation/deleteAll", deleteAllinvites);
+
+// invitation routes dev
+router.get("/user/invitation/:invitationid", invitationGetById); // achar pelo id do convite
+router.get("/user/invitation/:code", invitationcodeGet);
+router.put("/user/invitation/accept/:code", AcceptInvitation);
+router.put("/user/invitation/decline/:code", DeclineInvitation);
+
+
+// notification
+router.get("/user/:userid/notifications", notificationGet);
+router.post("/user/:userid/notifications", notificationPost);
+router.delete("/user/notifications/:notificationid", notificationDelete);
+router.delete("/user/notifications/deleteAll", deleteAllnotifications);
+router.put("/user/notifications/:notificationid", notificationPut);
+
 // inventory
-// se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
-router.get("/user/:userid/inventory", inventoryGet);
+
+router.get("/user/:userid/inventory", inventoryGet); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
 router.post("/user/:userid/inventory", inventoryPost);
 router.delete("/user/inventory/:inventoryid", inventoryDelete);
 router.delete("/user/inventories/deleteAll", deleteAllInventories);
 router.put("/user/inventory/:inventoryid", inventoryPut);
 
-
 //categories
-// se o front quiser pegar todas as categorias, ele passa 'all' no parâmetro 'userid'.
-router.get("/user/:inventoryid/category", categoryGet, authMiddleware());
-router.post("/user/:inventoryid/category", categoryPost, authMiddleware());
-router.delete("/user/category/:categoryid", categoryDelete, authMiddleware());
-router.put("/user/category/:categoryid", categoryPut, authMiddleware());
+
+router.get("/user/:inventoryid/category", categoryGet, authMiddleware()); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
+router.post("/:userid/:inventoryid/category", categoryPost, authMiddleware());
+router.delete("/:userid/:categoryid", categoryDelete, authMiddleware());
+router.put("/:userid/:categoryid", categoryPut, authMiddleware());
+router.delete("/user/categories/deleteAll", categoryDeleteAll)
 
 //products
-// se o front quiser pegar todos os produtos, ele passa 'all' no parâmetro 'categoryid'.
-router.get("/user/category/:categoryid/product", productGet, authMiddleware());
-router.post("/user/category/:categoryid/product", productPost, authMiddleware());
-router.delete("/user/category/:categoryid/product/:productid", productDelete, authMiddleware());
-router.put("/user/category/:categoryid/product/:productid", productPut, authMiddleware());
+
+router.get("/user/category/:categoryid/product", productGet, authMiddleware()); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
+router.post(
+  "/user/category/:categoryid/product",
+  productPost,
+  authMiddleware()
+);
+router.delete(
+  "/user/category/:categoryid/product/:productid",
+  productDelete,
+  authMiddleware()
+);
+router.put(
+  "/user/category/:categoryid/product/:productid",
+  productPut,
+  authMiddleware()
+);
 
 //user
 router.post("/user/create", createUser);
@@ -59,3 +132,4 @@ router.post("/user/verify/resend", resendCode);
 
 //Dev routes
 router.get("/user/getAll", getUsers);
+router.delete("/user/deleteAll", deleteAll);

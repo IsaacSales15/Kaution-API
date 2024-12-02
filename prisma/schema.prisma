@@ -9,17 +9,21 @@ datasource db {
 
 model User {
   id                 String            @id @default(auto()) @map("_id") @db.ObjectId
+  namertag           String            @unique
   email              String            @unique
   name               String
   password           String
   isVerified         Boolean?          @default(false)
   verificationCode   String?
   verificationExpire DateTime
-  inventories        Inventory[]       
   createdAt          DateTime?         @default(now())
   updateAt           DateTime?         @updatedAt
   authCodes          AuthCode[]
-  InventoryAccess    InventoryAccess[]
+  notifications      Notifications[]
+  inventoryAccess    InventoryAccess[]
+  inventories        Inventory[]
+  useInviteBy        Invitation[]      @relation("inviteBy")
+  useInviteFor       Invitation[]      @relation("inviteFor")
 }
 
 model AuthCode {
@@ -28,7 +32,7 @@ model AuthCode {
   code      String
   expire    DateTime
   createdAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId, expire])
 }
@@ -40,17 +44,19 @@ model Inventory {
   name            String
   updateAt        DateTime          @updatedAt
   createdAt       DateTime          @default(now())
-  categories      Category[]        
-  InventoryAccess InventoryAccess[]
+  categories      Category[]
+  inventoryAccess InventoryAccess[]
+  Invitation      Invitation[]
 }
 
 model Category {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String?
+  userId      String    @db.ObjectId
   inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
   inventoryId String    @db.ObjectId
-  products    Product[] 
+  products    Product[]
   created     DateTime  @default(now())
   updateAt    DateTime  @updatedAt
 }
@@ -81,5 +87,28 @@ model InventoryAccess {
 enum Role {
   ADM
   USER
-  VISITOR
+}
+
+model Notifications {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId   String   @db.ObjectId
+  message  String
+  sendAt   DateTime @default(now())
+  viewedAt DateTime @default(now())
+  viewed   Boolean  @default(false)
+}
+
+model Invitation {
+  id           String    @id @default(auto()) @map("_id") @db.ObjectId
+  inventory    Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
+  inventoryId  String    @db.ObjectId
+  inviteBy     User      @relation(fields: [inviteById], references: [id], name: "inviteBy", onDelete: Cascade)
+  inviteById   String    @db.ObjectId
+  inviteFor    User      @relation(fields: [inviteForId], references: [id], name: "inviteFor", onDelete: Cascade)
+  inviteForId  String    @db.ObjectId
+  inviteStatus Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  acceptAt     DateTime  @updatedAt
+  code         String    @unique
 }

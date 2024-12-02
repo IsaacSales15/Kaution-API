@@ -105,7 +105,7 @@ export const inventoryPut = async (req: Request, res: Response) => {
 
 export const deleteAllInventories = async (req: Request, res: Response) => {
   try {
-    await prisma.inventory.deleteMany({});
+    await prisma.inventory.deleteMany();
 
     return res.status(200).json({ message: "All inventories have been deleted successfully" });
   } catch (error) {
