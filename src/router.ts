@@ -91,9 +91,9 @@ router.put("/user/inventory/:inventoryid", inventoryPut);
 
 router.get("/user/:inventoryid/category", categoryGet, authMiddleware()); // se o front quiser pegar todas as convites, ele passa 'all' no parâmetro 'userid'.
 router.post("/:userid/:inventoryid/category", categoryPost, authMiddleware());
-router.delete("/:userid/:categoryid/", categoryDelete, authMiddleware());
-router.put("/:userid/:categoryid/", categoryPut, authMiddleware());
-router.delete("/user/del-all-categories", categoryDeleteAll)
+router.delete("/:userid/:categoryid", categoryDelete, authMiddleware());
+router.put("/:userid/:categoryid", categoryPut, authMiddleware());
+router.delete("/user/categories/deleteAll", categoryDeleteAll)
 
 //products
 
