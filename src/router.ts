@@ -93,6 +93,7 @@ router.get("/user/:inventoryid/category", categoryGet, authMiddleware()); // se 
 router.post("/:userid/:inventoryid/category", categoryPost, authMiddleware());
 router.delete("/:userid/:categoryid/", categoryDelete, authMiddleware());
 router.put("/:userid/:categoryid/", categoryPut, authMiddleware());
+router.delete("/user/del-all-categories", categoryDeleteAll)
 
 //products
 

@@ -86,6 +86,7 @@ export const categoryPost = async (req: Request, res: Response) => {
       await prisma.category.create({
         data: {
           inventoryId: reqinventoryid,
+          userId: requserid,
           name: req.body.name,
           description: req.body.description,
           created: today,
@@ -104,6 +105,7 @@ export const categoryDelete = async (req: Request, res: Response) => {
   try {
     const reqcategoryid = req.params.categoryid;
     const requserid = req.params.userid;
+    console.log(requserid)
 
     if (!reqcategoryid) {
       return res.status(400).json({ error: "Category ID are required" });
@@ -168,7 +170,7 @@ export const categoryDelete = async (req: Request, res: Response) => {
 
     return res.status(200).json({ message: "Category deleted" });
   } catch (error) {
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ error });
   }
 };
 
@@ -177,7 +179,8 @@ export const categoryDeleteAll = async (req: Request, res: Response) => {
     await prisma.category.deleteMany();
     return res.status(200).json({ message: "All categories deleted" });
   } catch (error) {
-    return res.status(500).json({ error: "Internal server error" });
+    console.log(error);
+    return res.status(500).json(error);
   }
 };
 
