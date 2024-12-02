@@ -6,5 +6,9 @@ Para informações detalhadas das rotas de verificação [Rotas de Verificação
 
 Para informações detalhadas das rotas do inventário [Rotas dos Inventários](./documentation/INVENTORY_DOCUMENTATION.md).
 
+Para informações detalhadas das rotas das categorias [Rotas das Categorias](./documentation/CATEGORY_DOCUMENTATION.md).
+
 Para informações detalhadas das rotas dos produtos [Rotas dos Produtos](./documentation/PRODUCTS_DOCUMENTATION.md).
+
+
 
