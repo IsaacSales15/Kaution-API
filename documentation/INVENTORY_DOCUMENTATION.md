@@ -120,4 +120,5 @@ Resposta de Sucesso: (200)
 }
 ```
 **Erros Possíveis**
-`500:` Erro interno no servidor.
+
+- `500:` Erro interno no servidor.
