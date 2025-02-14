@@ -53,6 +53,7 @@ model Category {
   id          String    @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String?
+  userId      String    @db.ObjectId
   inventory   Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
   inventoryId String    @db.ObjectId
   products    Product[]
