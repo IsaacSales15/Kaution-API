@@ -15,6 +15,7 @@ export function authMiddleware(permissions?: string[]) {
     try {
       const JWT_SECRET = process.env.JWT_SECRET;
       if (!JWT_SECRET) {
+        console.error("JWT_SECRET not set in environment variables");
         return res.status(500).json({ error: "Internal server error" });
       }
 
@@ -22,7 +23,9 @@ export function authMiddleware(permissions?: string[]) {
       req.user = { userId: decoded.userId };
 
       if(permissions){
+
         const inventoryId = req.params.inventoryId;
+
         const userRole = await prisma.inventoryAccess.findFirst({
           where: {userId: decoded.userId, inventoryId},
           select: {role: true}
@@ -35,7 +38,15 @@ export function authMiddleware(permissions?: string[]) {
 
       next();
     } catch (error) {
-      console.error(error);
+      console.error("Authentication error:", error);
+
+      if (error instanceof Error) {
+        if (error.name === "JsonWebTokenError" || error.name === "TokenExpiredError") {
+          return res.status(401).json({ error: `Unauthorized: ${error.message}` });
+        }
+        return res.status(500).json({ error: `Internal server error: ${error.message}` });
+      }
+
       return res.status(500).json({ error: "Internal server error" });
     }
   };
