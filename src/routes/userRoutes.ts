@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { createUser, loginUser } from "../../controllers/register-controllers/user_actions-controllers/UserController";
-import { getSingleUser, updateUser, updatePassword, deleteUser } from "../../controllers/register-controllers/user_actions-controllers/UserActionsController";
-import { authMiddleware } from "../../middlewares/AuthMiddleware";
+import { createUser, loginUser } from "../controllers/register-controllers/user_actions-controllers/UserController";
+import { getSingleUser, updateUser, updatePassword, deleteUser } from "../controllers/user_actions-controllers/UserActionsController";
+import { authMiddleware } from "../middlewares/AuthMiddleware";
 
 const router = Router();
 

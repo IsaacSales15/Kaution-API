@@ -4,9 +4,9 @@ import invitationRoutes from "./invitation-route/invitationRoutes"
 import categoryRoutes from "./category-route/categoryRoutes";
 import inventoryRoutes from "./product-route/productRoutes";
 import productRoutes from "./product-route/productRoutes";
-import userRoutes from "./user-route/userRoutes";
+import userRoutes from "./userRoutes";
 import notificationRoutes from "./notification-route/notificationRoutes";
-import verifyRoutes from "./verify-router/verifyRoutes";
+import verifyRoutes from "./verifyRoutes";
 import devRoutes from "./dev-route/devRoutes";
 
 export const router = Router();

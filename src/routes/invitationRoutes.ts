@@ -1,7 +1,7 @@
 import { Router } from "express";
-import { invitationGet, invitationPost, invitationDelete, invitationGetById, deleteAllinvites } from "../../controllers/invitation-controllers/InvitationController";
-import { AcceptInvitation, DeclineInvitation, invitationcodeGet } from "../../controllers/invitation-controllers/accep_decline-controllers/AccepDeclineController";
-import { authMiddleware } from "../../middlewares/AuthMiddleware";
+import { invitationGet, invitationPost, invitationDelete, invitationGetById, deleteAllinvites } from "../controllers/invitation-controllers/InvitationController";
+import { AcceptInvitation, DeclineInvitation, invitationcodeGet } from "../controllers/invitation-controllers/accep_decline-controllers/AccepDeclineController";
+import { authMiddleware } from "../middlewares/AuthMiddleware";
 
 const router = Router();
 

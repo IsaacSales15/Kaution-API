@@ -1,6 +1,6 @@
-import { prisma } from "../../../database/prisma";
+import { prisma } from "../../database/prisma";
 import { Request, Response } from "express";
-import { getUTCTime } from "../../../utils/getUTCTime";
+import { getUTCTime } from "../../utils/getUTCTime";
 import { Role } from "@prisma/client";
 
 let todayISO = new Date().toISOString();

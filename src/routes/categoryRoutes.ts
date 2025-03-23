@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { categoryPost, categoryGet, categoryPut, categoryDelete } from "../../controllers/category-controllers/CategoryController";
-import { authMiddleware } from "../../middlewares/AuthMiddleware";
+import { categoryPost, categoryGet, categoryPut, categoryDelete } from "../controllers/CategoryController";
+import { authMiddleware } from "../middlewares/AuthMiddleware";
 
 const router = Router();
 

@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { notificationPost, notificationGet, notificationPut, notificationDelete } from "../../controllers/notification-controllers/NotificationController";
-import { authMiddleware } from "../../middlewares/AuthMiddleware";
+import { notificationPost, notificationGet, notificationPut, notificationDelete } from "../controllers/NotificationController";
+import { authMiddleware } from "../middlewares/AuthMiddleware";
 
 const router = Router();
 

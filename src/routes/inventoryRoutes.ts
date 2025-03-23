@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { inventoryPost, inventoryDelete, inventoryGet, inventoryPut } from "../../controllers/inventory-controllers/InventoryController";
-import { authMiddleware } from "../../middlewares/AuthMiddleware";
+import { inventoryPost, inventoryDelete, inventoryGet, inventoryPut } from "../controllers/InventoryController";
+import { authMiddleware } from "../middlewares/AuthMiddleware";
 
 const router = Router();
 
