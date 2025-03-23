@@ -10,7 +10,7 @@ export const createUser = async (req: Request, res: Response) => {
     const { name, email, password, namertag } = req.body;
 
     if (!name || !email || !password || !namertag) {
-      return res.status(400).json({ error: "Name and email are required" });
+      return res.status(400).json({ success: false, message: "All fields are required" });
     }
 
     const userExists = await prisma.user.findUnique({
@@ -20,7 +20,7 @@ export const createUser = async (req: Request, res: Response) => {
     });
 
     if (userExists) {
-      return res.status(400).json({ error: "User already exists" });
+      return res.status(400).json({ success: false, message: "User already exists" });
     }
 
     const hashPassword = await hash(password, 8);
@@ -47,16 +47,17 @@ export const createUser = async (req: Request, res: Response) => {
     try {
       await sendEmail(user.email, user.name, code);
     } catch (error) {
-      console.log("Error: ", error);
-      console.log(error);
-      return res
-        .status(500)
-        .json({ error: "User created, but email not sent" });
+      await prisma.user.delete({ where: { id: user.id } }); 
+      return res.status(500).json({ success: false, message: "Error sending verification email" });
     }
 
-    return res.status(201).json(user);
+    return res.status(201).json({
+      success: true,
+      message: "User created successfully. Please check your email to verify your account.",
+      data: user,
+    });
   } catch (error) {
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
 
@@ -65,7 +66,7 @@ export const loginUser = async (req: Request, res: Response) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ error: "Email and password are required" });
+      return res.status(400).json({ success: false, message: "Email and password are required" });
     }
 
     const user = await prisma.user.findUnique({
@@ -75,17 +76,17 @@ export const loginUser = async (req: Request, res: Response) => {
     });
 
     if (!user) {
-      return res.status(400).json({ error: "User not found" });
+      return res.status(400).json({ success: false, message: "Email or password is incorrect" });
     }
 
     if (!user.isVerified) {
-      return res.status(400).json({ error: "User not verified" });
+      return res.status(400).json({ success: false, message: "User not verified" });
     }
 
     const passwordMatch = await compare(password, user.password);
 
     if (!passwordMatch) {
-      return res.status(400).json({ error: "Invalid password" });
+      return res.status(400).json({ success: false, message: "Email or password is incorrect" });
     }
 
     const token = jwt.sign(
@@ -102,9 +103,13 @@ export const loginUser = async (req: Request, res: Response) => {
 
     res.cookie("authToken", token, { httpOnly: true, secure: true });
 
-    return res.status(200).json(responsePayload);
+    return res.status(200).json({
+      success: true,
+      message: "Login successful",
+      data: { userId: user.id, token },
+    });
   } catch (error) {
     console.log(error);
-    return res.status(500).json({ error: "Internal server error" });
+    return res.status(500).json({ success: false, message: "Internal server error" });
   }
 };
